@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+{% block content %}
+<script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+<div class="md-form mt-0">
+  <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+</div>
+<div id="data">
+</div>
+
+<script>
+    $("#data").html("");
+    var data = {{ data|safe }};
+    var rows =0;
+    if(data.length%3!=0){
+        rows = parseInt((data.length/3)) +1;
+    }
+    else{
+        rows = data.length/3;
+    }
+    var div = $("<div></div>");
+    var offset = 0;
+    for(var i=0; i<rows; i++){
+        var row = $("<div class='row top-buffer'></div>");
+        for(var j=0; j<3; j++){
+            var o = offset+i+j;
+            if(o>data.length-1){
+                break;
+            }
+            else{
+                var col = $("<div class='col-sm-4'></div>");
+                var card = $("<div class='card' style='height:300px; width: 22rem;'></div>");
+                var card_body = $("<div  class='card-body scroll'></div>");
+                var title = $("<h5 class='card-title'></h5>");
+                var subject = $("<h6 class='card-subtitle mb-2 text-muted'></h6>");
+                var content = $("<p  class='card-text'></p>");
+                var footer = $("<div class='row justify-content-center mt-3'><a href='#' class='card-link update col-md-5 text-center'>Update</a><a href='#' class='card-link delete col-md-5 text-center'>Delete</a></div>");
+                var votes = $("<div class='row mt-3 justify-content-center'></div>");
+                var upvote = $("<a href='#' class='card-link col-sm-3 nopadding text-right'>Upvote &nbsp;</a>");
+                var upvoteText = $("<a href='#' class='card-link col-sm-2 nopadding text-left'>2</a>");
+                var downvoteText = $("<a href='#' class='card-link col-sm-2 nopadding text-left'>10</a>");
+                var downvote = $("<a href='#' class='card-link col-sm-3 nopadding text-right'>DownVote&nbsp;</a>");
+
+                $(title).append(data[o].title);
+                $(subject).append(data[o].subject);
+                $(content).append(data[o].content);
+
+
+                $(card_body).append(title);
+                $(card_body).append(subject);
+                $(card_body).append(content);
+                $(card_body).append(footer);
+
+                $(votes).append(upvote);
+                $(votes).append(upvoteText);
+                $(votes).append(downvote);
+                $(votes).append(downvoteText);
+
+                $(card_body).append(votes);
+                $(card_body).attr('name', data[o].id);
+
+                $(card).append(card_body);
+                $(card).attr('name', data[o].id);
+                $(col).append(card);
+                $(row).append(col);
+            }
+
+        }
+        $(div).append(row);
+        offset=offset+2;
+    }
+    $("#data").html(div);
+    $(".update").on("click", function(){
+        if($(this)[0].innerText == "Update"){
+         console.log("inside if");
+         var card = $(this).parent().parent();
+         console.log($(card));
+         console.log($(card).children());
+         var post  = {
+            id : $(card).attr("name"),
+            title : $(card).children()[0].innerText,
+            subject : $(card).children()[1].innerText,
+            content : $(card).children()[2].innerText,
+         };
+         post = JSON.stringify(post);
+         //console.log(JSON.stringify(post));
+         url = "{{ url_for('updatePost', data="post") }}".replace("post", post);
+         console.log(url);
+         window.location.href = url;
+        }
+    });
+
+    $(".delete").on("click", function(){
+        if($(this)[0].innerText == "Delete"){
+         var card = $(this).parent().parent();
+         var id = $(card).attr("name");
+         var userid = {{current_user.id}};
+         data = {
+            id: id,
+            userid : userid
+          };
+         data = JSON.stringify(data);
+         url = "{{ url_for('deletePost', postid="post") }}".replace("post", data);
+         window.location.href = url;
+        }
+    });
+
+
+</script>
+{% endblock %}

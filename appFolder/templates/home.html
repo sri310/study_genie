@@ -1,0 +1,102 @@
+{% extends "layout.html" %}
+{% block content %}
+<script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+<div class="md-form mt-0 row justify-content-center">
+  <input class="form-control col-md-10 " type="text" placeholder="Search" aria-label="Search">
+  <button type="button" class="btn btn-primary col-sm-1">Go</button>
+</div>
+<div id="data">
+</div>
+
+<script>
+    $("#data").html("");
+    var data = {{ data|safe }};
+    var rows =0;
+    console.log(data);
+    if(data.length%3!=0){
+        rows = parseInt((data.length/3)) +1;
+    }
+    else{
+        rows = data.length/3;
+    }
+    var div = $("<div></div>");
+    var offset = 0;
+    for(var i=0; i<rows; i++){
+        var row = $("<div class='row top-buffer'></div>");
+        for(var j=0; j<3; j++){
+            var o = offset+i+j;
+            if(o>data.length-1){
+                break;
+            }
+            else{
+                var col = $("<div class='col-sm-4'></div>");
+                var card = $("<div class='card' style='height:300px; width: 22rem;'></div>");
+                var card_body = $("<div  class='card-body scroll'></div>");
+                var title = $("<h5 class='card-title'></h5>");
+                var subject = $("<h6 class='card-subtitle mb-2 text-muted'></h6>");
+                var content = $("<p  class='card-text'></p>");
+                var upvote = $("<a href='#' class='card-link float-left upvote'>Upvote</a>");
+                var upvoteText = $("<a href='#' class='card-link float-left'></a>");
+                var downvoteText = $("<a href='#' class='card-link float-right'></a>");
+                var downvote = $("<a href='#' class='card-link float-right downvote'>DownVote</a>");
+
+                $(title).append(data[o].title);
+                $(subject).append(data[o].subject);
+                $(content).append(data[o].content);
+                $(upvoteText).append(data[o].upvote);
+                $(downvoteText).append(data[o].downvote);
+
+                $(card_body).append(title);
+                $(card_body).append(subject);
+                $(card_body).append(content);
+                $(card_body).append(upvote);
+                $(card_body).append(upvoteText);
+                $(card_body).append(downvoteText);
+                $(card_body).append(downvote);
+                $(card_body).attr('name', data[o].id);
+
+                $(card).append(card_body);
+                $(card).attr('name', data[o].id);
+                $(col).append(card);
+                $(row).append(col);
+            }
+
+        }
+        $(div).append(row);
+        offset=offset+2;
+    }
+    $("#data").html(div);
+
+    $(".upvote").on("click", function(){
+        {% if current_user.is_authenticated %}
+          var postid  = $(this).parent().attr("name");
+          var vote = {
+              postid : $(this).parent().attr("name"),
+              userid :  {{current_user.id }},
+              activity: "upvote"
+          };
+
+          vote = JSON.stringify(vote);
+          url = "{{ url_for('voteActivity', data="post") }}".replace("post", vote);
+          window.location.href = url;
+        {% endif %}
+
+    });
+
+    $(".downvote").on("click", function(){
+        {% if current_user.is_authenticated %}
+          var postid  = $(this).parent().attr("name");
+          var vote = {
+              postid : $(this).parent().attr("name"),
+              userid :  {{current_user.id }},
+              activity: "downvote"
+          };
+
+          vote = JSON.stringify(vote);
+          url = "{{ url_for('voteActivity', data="post") }}".replace("post", vote);
+          window.location.href = url;
+        {% endif %}
+
+    });
+</script>
+{% endblock %}
