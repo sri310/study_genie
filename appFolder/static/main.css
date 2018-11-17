@@ -91,4 +91,24 @@ table, th, td {
    margin: 0 !important;
 }
 
+.summary p.collapse:not(.show) {
+    height: 42px !important;
+    overflow: hidden !important;;
+
+    display: -webkit-box !important;;
+    -webkit-line-clamp: 2 !important;;
+    -webkit-box-orient: vertical !important;;
+}
+
+.summary p.collapsing {
+    min-height: 42px !important;
+}
+
+.summary a.collapsed:after  {
+    content: '+ Read More';
+}
+
+.summary a:not(.collapsed):after {
+    content: '- Read Less';
+}
 .top-buffer { margin-top:20px; }

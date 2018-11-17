@@ -3,7 +3,7 @@ import json
 from flask import render_template,url_for,flash,redirect,jsonify,request,g,session,current_app
 from datetime import datetime
 from appFolder import app,db
-from appFolder.forms import LoginForm, RegistrationForm, CreatePostForm, UpdatePostForm
+from appFolder.forms import LoginForm, RegistrationForm, CreatePostForm, UpdatePostForm, SearchForm
 from appFolder.models import User
 from flask_login import login_user, current_user, logout_user, login_required
 from appFolder import  apis
@@ -14,11 +14,20 @@ def session_management():
     # make the session last indefinitely until it is cleared
     session.permanent = True
 
-@app.route("/")
-@app.route("/home")
+@app.route("/",  methods=['GET','POST'])
+@app.route("/home",  methods=['GET','POST'])
 def home():
+    form = SearchForm()
     data = requests.get("http://"+request.host+"/recommendations").text
-    return render_template('home.html',title ='home', data = data)
+    if form.validate_on_submit():
+        print(form.search.data)
+        searchdata = form.search.data
+        searchdata = requests.get("http://" + request.host + "/search/"+searchdata).text
+        return render_template('home.html', title='home', data=searchdata, form=form, host = request.host)
+    if current_user.is_authenticated:
+        searchdata = requests.get("http://" + request.host + "/recommendations/" + str(current_user.id)).text
+        return render_template('home.html', title='home', data=searchdata, form=form, host=request.host)
+    return render_template('home.html',title ='home', data = data, form=form, host=request.host)
 
 @app.route("/<userid>/myPosts")
 @login_required
@@ -26,14 +35,25 @@ def getMyPosts(userid):
     data = requests.get("http://"+request.host+"/recommendations/"+userid+"/myPosts").text
     return render_template('myPosts.html', title='myPosts', data=data)
 
+@app.route("/subjectSearch/<data>", methods=['GET','POST'])
+def subjectSearch(data):
+    print(data)
+    data = requests.get("http://"+request.host+"/subject_filter/"+data).text
+    form = SearchForm()
+    return render_template('home.html', title='home', data=data, form=form, host=request.host)
+
 @app.route("/update/<data>", methods=['GET','POST'])
 @login_required
 def updatePost(data):
     form = UpdatePostForm()
     data = json.loads(data)
+    postid = data["id"]
     form.content.data = data['content']
     if form.validate_on_submit():
         data = json.dumps(form.data)
+        dataJSON =json.loads(data)
+        dataJSON['postid'] =postid
+        data  = json.dumps(dataJSON)
         url = "http://"+request.host+"/updatePost_api"
         requests.post(url=url,json=data)
         flash(f'Updated post', 'success')
@@ -49,14 +69,6 @@ def deletePost(postid):
     flash(f'Deleted post', 'success')
     return redirect(url_for('getMyPosts', userid=current_user.id))
 
-
-@app.route("/vote/<data>")
-@login_required
-def voteActivity(data):
-    url = "http://" + request.host + "/vote_api"
-    data = data
-    requests.post(url=url, json=data)
-    return redirect(url_for('home'))
 
 
 @app.route("/register", methods = ['GET','POST'])
@@ -88,7 +100,8 @@ def create():
         data = json.dumps(form.data)
         url = "http://"+request.host+"/createPost_api"
         requests.post(url=url,json=data)
-        print(type(jsonify(form.data)))
+        flash(f'Post Created', 'success')
+        return redirect(url_for('getMyPosts', userid=current_user.id))
     return render_template('createPost.html', title = "create", form = form)
 
 @app.route("/login", methods = ['GET','POST'])
@@ -120,7 +133,7 @@ def logout():
 @app.route("/profile/<userid>")
 @login_required
 def profile(userid):
-    return render_template('profile.html',title='profile', id=userid)
+    return render_template('profile.html',title='profile', id=userid, host=request.host)
 
 
 

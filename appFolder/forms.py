@@ -36,3 +36,7 @@ class UpdatePostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=2, max=100)])
     content = TextAreaField('Content', validators=[DataRequired()])
     submit = SubmitField('Update')
+
+class SearchForm(FlaskForm):
+    search = StringField('Search', validators=[DataRequired(), Length(min=2, max=500)])
+    submit = SubmitField('Go')

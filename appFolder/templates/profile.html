@@ -2,12 +2,64 @@
 {% block content %}
     <h3>  Hello, {{current_user.username }} </h3><br>
      <div style="display:none;" id="userid">{{id}}</div>
-    <h4>  You your last login time was :  {{ current_user.last_login }}</h4>
-    <br><br>
-    <a href="{{url_for('create')}}">create a post</a><br>
-    <a href="{{url_for('getMyPosts', userid= id)}}">My Posts</a>
+    <h6> Last login :  {{ current_user.last_login }}</h6>
+    <br>
+    <div class="row">
+    <div class="list-group col-md-2" style="width:300px;">
+        <li class="list-group-item list-group-item-warning"><a class="text-dark" href="{{url_for('create')}}">Create Posts</a></li>
+        <li class="list-group-item list-group-item-warning"><a class="text-dark" href="{{url_for('getMyPosts', userid= id)}}">My Posts</a></li>
+        <li class="list-group-item list-group-item-warning"><a class="text-dark" href="{{url_for('home')}}">Explore Posts</a></li>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-4 progressChart"></div>
+    </div>
 
 
     <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/echarts.js"></script>
+    <script>
+        var host = {{host|tojson}};
+        $.ajax({
+         type: "GET",
+         url: "http://"+host+"/progressbarData/"+{{current_user.id}},
+         contentType : "application/json",
+         success : function(data){
+            console.log(data);
+            for(var i=0; i<data.length; i++){
+                var progressDiv = $("<div class='progress nopadding '></div>");
+                var progress = $("<div class='progress-bar progress-bar-striped progress-bar-animated' role='progressbar'  aria-valuemin='0' aria-valuemax='100'></div>");
+                var label = $("<div class='progress-label'></div>");
+                $(progress).attr("aria-valuenow", parseInt(data[i].value));
+                $(progress).css({
+                    "width" : data[i].value+"%"
+                });
+                $(label).html("&nbsp;&nbsp;"+data[i].name);
+                $(progressDiv).append(progress);
+                $(progressDiv).append(label);
+                $(progressDiv).attr("id",data[i].name);
+                $(".progressChart").append(progressDiv);
+                $(".progressChart").append("<br>");
+
+            }
+
+             $(".progress").on("click", function(){
+                    var subj = $(this).attr("id");
+
+                    url = "{{ url_for('subjectSearch', data="post") }}".replace("post", subj);
+                    console.log(url);
+                    window.location.href = url;
+
+
+                })
+                .on("mouseover", function(){
+                    $(this).css({"cursor" :"pointer"});
+                });
+           }
+         });
+
+
+    </script>
+
+
 
 {% endblock %}

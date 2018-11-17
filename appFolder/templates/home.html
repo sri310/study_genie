@@ -1,11 +1,20 @@
 {% extends "layout.html" %}
 {% block content %}
 <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
+<form method="POST" action="">
 <div class="md-form mt-0 row justify-content-center">
-  <input class="form-control col-md-10 " type="text" placeholder="Search" aria-label="Search">
-  <button type="button" class="btn btn-primary col-sm-1">Go</button>
+    {{form.hidden_tag()}}
+    {{ form.search(placeholder="Search", value="", class="form-control  col-md-11") }}
+    {{form.submit(class = "btn btn-primary") }}
+
 </div>
-<div id="data">
+</form>
+<div id="data" class="row">
 </div>
 
 <script>
@@ -29,31 +38,43 @@
                 break;
             }
             else{
+                var postid = data[o].id;
                 var col = $("<div class='col-sm-4'></div>");
-                var card = $("<div class='card' style='height:300px; width: 22rem;'></div>");
-                var card_body = $("<div  class='card-body scroll'></div>");
+                var card = $("<div class='card' style=' width: 22rem;'></div>");
+                var card_body = $("<div  class='card-body '></div>");
                 var title = $("<h5 class='card-title'></h5>");
                 var subject = $("<h6 class='card-subtitle mb-2 text-muted'></h6>");
-                var content = $("<p  class='card-text'></p>");
-                var upvote = $("<a href='#' class='card-link float-left upvote'>Upvote</a>");
-                var upvoteText = $("<a href='#' class='card-link float-left'></a>");
-                var downvoteText = $("<a href='#' class='card-link float-right'></a>");
-                var downvote = $("<a href='#' class='card-link float-right downvote'>DownVote</a>");
+                var voteHolder = $("<div class='row small ml-0 mt-2 mb-2'></div>");
+                var content = $("<div  class='summary'></div>");
+                var contentPara = $("<p class ='collapse'></p>");
+                var contentToggle = $("<a class='collapsed' data-toggle='collapse'  aria-expanded='false'></a>");
+                var upvote = $("<a href='#' class='card-link float-left upvote text-success'>Upvote&nbsp;</a>");
+                var upvoteText = $("<a href='#' class='card-link float-left nopadding text-success'></a>");
+                var downvoteText = $("<a href='#' class='card-link float-right nopadding text-danger'></a>");
+                var downvote = $("<a href='#' class='card-link float-right downvote text-danger ml-2'>DownVote &nbsp;</a>");
 
+                $(contentPara).attr("id","collapse"+postid);
+                $(contentToggle).attr("href","#collapse"+postid);
+                $(contentToggle).attr("aria-controls","collapse"+postid);
+                $(contentPara).append(data[o].content);
+                $(content).append(contentPara);
+                $(content).append(contentToggle);
                 $(title).append(data[o].title);
                 $(subject).append(data[o].subject);
-                $(content).append(data[o].content);
+
                 $(upvoteText).append(data[o].upvote);
                 $(downvoteText).append(data[o].downvote);
 
                 $(card_body).append(title);
                 $(card_body).append(subject);
+                $(voteHolder).append(upvote);
+                $(voteHolder).append(upvoteText);
+                $(voteHolder).append(downvote);
+                $(voteHolder).append(downvoteText);
+                $(card_body).append(voteHolder);
                 $(card_body).append(content);
-                $(card_body).append(upvote);
-                $(card_body).append(upvoteText);
-                $(card_body).append(downvoteText);
-                $(card_body).append(downvote);
-                $(card_body).attr('name', data[o].id);
+                $(card_body).attr('name',  postid);
+
 
                 $(card).append(card_body);
                 $(card).attr('name', data[o].id);
@@ -69,33 +90,86 @@
 
     $(".upvote").on("click", function(){
         {% if current_user.is_authenticated %}
-          var postid  = $(this).parent().attr("name");
+          var element = this;
+          var postid  = $(this).parent().parent().attr("name");
           var vote = {
-              postid : $(this).parent().attr("name"),
+              postid : $(this).parent().parent().attr("name"),
               userid :  {{current_user.id }},
               activity: "upvote"
           };
 
           vote = JSON.stringify(vote);
-          url = "{{ url_for('voteActivity', data="post") }}".replace("post", vote);
-          window.location.href = url;
+          var host = {{ host|tojson}};
+          url = "http://"+host+"/vote_api";
+          console.log(url);
+           $.ajax({
+                type: "POST",
+                data :JSON.stringify(vote),
+                url: url,
+                contentType : "application/json",
+                success : function(data){
+                    console.log($(element).next());
+                    $(element).next()[0].innerText = data;
+                }
+            });
+
         {% endif %}
 
     });
 
     $(".downvote").on("click", function(){
         {% if current_user.is_authenticated %}
-          var postid  = $(this).parent().attr("name");
+          var postid  = $(this).parent().parent().attr("name");
+          var element = this;
           var vote = {
-              postid : $(this).parent().attr("name"),
+              postid : $(this).parent().parent().attr("name"),
               userid :  {{current_user.id }},
               activity: "downvote"
           };
 
           vote = JSON.stringify(vote);
-          url = "{{ url_for('voteActivity', data="post") }}".replace("post", vote);
-          window.location.href = url;
+          var host = {{ host|tojson}};
+          url = "http://"+host+"/vote_api";
+          console.log(url);
+           $.ajax({
+                type: "POST",
+                data :JSON.stringify(vote),
+                url: url,
+                contentType : "application/json",
+                success : function(data){
+                    console.log($(element).next());
+                    $(element).next()[0].innerText = data;
+                }
+            });
         {% endif %}
+
+    });
+
+    $(".collapsed").on("click", function(){
+      {% if current_user.is_authenticated %}
+          if($(this)[0].classList.value=="collapsed"){
+             var userid = {{current_user.id}};
+             var post  = {
+             postid : $(this).parent().parent().attr("name"),
+             user_id : userid.toString(),
+             activity : "read"
+
+          };
+         var host = {{ host|tojson}};
+          console.log(host);
+          console.log(post);
+          url = "http://"+host+"/read_api";
+          console.log(url);
+           $.ajax({
+                type: "POST",
+                data :JSON.stringify(post),
+                url: url,
+                contentType : "application/json"
+            });
+
+
+          }
+      {% endif %}
 
     });
 </script>
