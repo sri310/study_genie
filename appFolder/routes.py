@@ -8,6 +8,7 @@ from appFolder.models import User
 from flask_login import login_user, current_user, logout_user, login_required
 from appFolder import  apis
 import requests
+from time import gmtime, strftime
 
 @app.before_request
 def session_management():
@@ -105,6 +106,19 @@ def create():
         flash(f'Post Created', 'success')
         return redirect(url_for('getMyPosts', userid=current_user.id))
     return render_template('createPost.html', title = "create", form = form)
+
+@app.route("/discussions", methods=['GET','POST'])
+def discussions():
+    form =  CreatePostForm()
+    return render_template('discussion.html', title = "Discussions")
+
+@app.route("/addFeed", methods=['GET','POST'])
+def addFeed():
+    cur_time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+    content = request.args.get('feed')
+    username = current_user.username
+    feed = '''<article class="media content-section"> <img class="rounded-circle article-img" src="static/profile_pics/default.png"> <div class="media-body"> <div class="article-metadata"> <a class="mr-2" href="#">'''+ username +'''</a> <small class="text-muted">'''+ cur_time +'''</small> </div> <p class="article-content">'''+ content +'''</p> </div> </article>'''
+    return feed
 
 @app.route("/login", methods = ['GET','POST'])
 def login():
