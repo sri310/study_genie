@@ -81,7 +81,7 @@ def register():
         #flash creates a one time alert
 
         email = User.query.filter_by(email=form.email.data).first()
-        user =  User.query.filter_by(email=form.username.data).first()
+        user =  User.query.filter_by(username=form.username.data).first()
         if not user and not email:
             user = User(username = form.username.data, email = form.email.data, password = form.password.data,
                         school_year = form.school_year.data, gpa = form.gpa.data)
