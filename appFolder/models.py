@@ -30,10 +30,11 @@ class Posts(db.Model):
      id = db.Column(db.Integer, primary_key=True)
      user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
      subject = db.Column(db.String(50), nullable=False)
+     title = db.Column(db.String(50),nullable=False)
      content = db.Column(db.String(8000), nullable=False)
 
      def __repr__(self):
-         return f"User('{self.id}', '{self.user_id}','{self.content}','{self.subject}')"
+         return f"Posts('{self.id}', '{self.user_id}','{self.content}','{self.subject}','{self.title}')"
 
 class Activites(db.Model):
     id = db.Column(db.Integer, primary_key=True)

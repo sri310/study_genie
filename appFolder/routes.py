@@ -55,7 +55,7 @@ def updatePost(data):
         dataJSON =json.loads(data)
         dataJSON['postid'] =postid
         data  = json.dumps(dataJSON)
-        url = "http://"+request.host+"/updatePost_api"
+        url = "http://"+request.host+"/updatePost_api"+str(current_user.id)
         requests.post(url=url,json=data)
         flash(f'Updated post', 'success')
         return redirect(url_for('getMyPosts', userid=current_user.id))
@@ -64,7 +64,7 @@ def updatePost(data):
 @app.route("/delete/<postid>")
 @login_required
 def deletePost(postid):
-    url = "http://" + request.host + "/deletePost_api"
+    url = "http://" + request.host + "/deletePost_api"+str(current_user.id)
     data = postid
     requests.post(url=url, json=data)
     flash(f'Deleted post', 'success')
@@ -83,6 +83,7 @@ def register():
         email = User.query.filter_by(email=form.email.data).first()
         user =  User.query.filter_by(username=form.username.data).first()
         if not user and not email:
+
             user = User(username = form.username.data, email = form.email.data, password = form.password.data,
                         school_year = form.school_year.data, gpa = form.gpa.data)
             db.session.add(user)
@@ -101,7 +102,7 @@ def create():
     form =  CreatePostForm()
     if form.validate_on_submit():
         data = json.dumps(form.data)
-        url = "http://"+request.host+"/createPost_api"
+        url = "http://"+request.host+"/createPost_api/"+str(current_user.id)
         requests.post(url=url,json=data)
         flash(f'Post Created', 'success')
         return redirect(url_for('getMyPosts', userid=current_user.id))
@@ -130,6 +131,7 @@ def login():
         user = User.query.filter_by(username =  form.username.data).first()
         if user and (user.password==form.password.data):
             login_user(user)
+            print(current_user.username)
             return redirect(url_for('home'))
         else :
             flash('Unsucessful Login! Please check username and password', 'danger')

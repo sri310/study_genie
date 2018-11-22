@@ -4,15 +4,38 @@ from flask import render_template,url_for,flash,redirect,jsonify,request,g,sessi
 from datetime import datetime
 from appFolder import app,db
 from appFolder.forms import LoginForm, RegistrationForm, CreatePostForm
-from appFolder.models import User
+from appFolder.models import User,Posts
 from flask_login import login_user, current_user, logout_user, login_required
 
 @app.route("/testapi", methods = ['GET'])
 def testapi():
     return "hello"
 
-@app.route("/createPost_api", methods = ['POST'])
-def createPost_api():
+@app.route("/createPost_api/<userid>", methods = ['POST'])
+def createPost_api(userid):
+
+    parsed = json.loads(request.json)
+    post = Posts(user_id = userid,subject=parsed["subject"],content=parsed["content"],title=parsed["title"])
+
+    db.session.add(post)
+    db.session.commit()
+
+    result = db.session.query(Posts)
+    for row in result:
+        print(row)
+    return "post created"
+
+@app.route("/updatePost_api/<userid>", methods = ['POST'])
+def updatePost_api(userid):
+    #request.json will be the input received by the api
+    #following code prints the json on console
+    parsed = json.loads(request.json)
+    #print(json.dumps(parsed, indent=4, sort_keys=True))
+    # write code to create a post
+    return "posted"
+
+@app.route("/deletePost_api/<userid>", methods = ['POST'])
+def deletePost_api(userid):
     #request.json will be the input received by the api
     #following code prints the json on console
     parsed = json.loads(request.json)
@@ -20,27 +43,9 @@ def createPost_api():
     # write code to create a post
     return "posted"
 
-@app.route("/updatePost_api", methods = ['POST'])
-def updatePost_api():
-    #request.json will be the input received by the api
-    #following code prints the json on console
-    parsed = json.loads(request.json)
-    print(json.dumps(parsed, indent=4, sort_keys=True))
-    # write code to create a post
-    return "posted"
 
-@app.route("/deletePost_api", methods = ['POST'])
-def deletePost_api():
-    #request.json will be the input received by the api
-    #following code prints the json on console
-    parsed = json.loads(request.json)
-    print(json.dumps(parsed, indent=4, sort_keys=True))
-    # write code to create a post
-    return "posted"
-
-
-@app.route("/vote_api", methods = ['POST'])
-def vote_api():
+@app.route("/vote_api/<userid>", methods = ['POST'])
+def vote_api(userid):
     #request.json will be the input received by the api
     #following code prints the json on console
     print(request.json)
@@ -48,8 +53,8 @@ def vote_api():
     return "1"
 
 
-@app.route("/read_api", methods = ['POST'])
-def read_api():
+@app.route("/read_api/<userid>", methods = ['POST'])
+def read_api(userid):
     print(request.json)
     #request.json will be the input received by the api
     #following code prints the json on console
