@@ -20,6 +20,8 @@
     </div><br><br>
     <div class="row">
         <div class="col-md-6 pieChart" style="width:500px; height: 300px;">Pie Chart</div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5 lineChart" style="width:500px; height: 300px;">line Chart</div>
     </div>
 
 
@@ -109,7 +111,7 @@
                     ]
                 };
                 myChart.setOption(option);
-                myChart.resize(100,100,true);
+
                 console.log(myChart.getHeight());
                 console.log($(".pieChart").height());
                 });
@@ -156,6 +158,57 @@
                 $(".userStatistics").append(rowItem1);
                 $(".userStatistics").append(rowItem2);
 
+            }
+
+        });
+
+
+        $.ajax({
+            type: "GET",
+            url: "http://"+host+"/lineChart/"+{{current_user.id}},
+            contentType : "application/json",
+            success : function(data){
+                $(".lineChart").ready(function(){
+                      var myChart1 = echarts.init($(".lineChart")[0]);
+                      var dateList = data.map(function (item) {
+                        return item[0];
+                    });
+                    var valueList = data.map(function (item) {
+                        return item[1];
+                    });
+                      option = {
+                        // Make gradient line here
+                        visualMap: [{
+                            show: false,
+                            type: 'continuous',
+                            seriesIndex: 0,
+                            min: 0,
+                            max: 400
+                        }],
+
+
+                        title: [{
+                            left: 'center',
+                            text: 'Activity Timeline'
+                        }],
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        xAxis: [{
+                            data: dateList
+                        }],
+                        yAxis: [{
+                            splitLine: {show: false}
+                        }],
+
+                        series: [{
+                            type: 'line',
+                            showSymbol: false,
+                            data: valueList
+                        }]
+                    };
+                    myChart1.setOption(option);
+                });
             }
 
         });

@@ -90,7 +90,7 @@ def register():
             db.session.commit()
             flash(f'Account created for {form.username.data}!', 'success')
             login_user(user)
-            return redirect(url_for('home'))
+            return redirect(url_for('profile',userid=current_user.id))
         else:
             flash(f'Account already exists!','danger')
         return redirect(url_for('login'))
@@ -132,7 +132,7 @@ def login():
         if user and (user.password==form.password.data):
             login_user(user)
             print(current_user.username)
-            return redirect(url_for('home'))
+            return redirect(url_for('profile',userid=current_user.id))
         else :
             flash('Unsucessful Login! Please check username and password', 'danger')
     return render_template('login.html', title = 'Login', form = form)
