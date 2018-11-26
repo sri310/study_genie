@@ -7,6 +7,10 @@ from appFolder.forms import LoginForm, RegistrationForm, CreatePostForm
 from appFolder.models import User,Posts
 from flask_login import login_user, current_user, logout_user, login_required
 
+from elasticsearch import Elasticsearch
+
+es = Elasticsearch([{'host': 'localhost', 'port': '9200'}])
+
 @app.route("/testapi", methods = ['GET'])
 def testapi():
     return "hello"
@@ -15,14 +19,17 @@ def testapi():
 def createPost_api(userid):
 
     parsed = json.loads(request.json)
+
     post = Posts(user_id = userid,subject=parsed["subject"],content=parsed["content"],title=parsed["title"])
 
     db.session.add(post)
     db.session.commit()
 
-    result = db.session.query(Posts)
-    for row in result:
-        print(row)
+    parsed["post_id"] = post.id
+    parsed["activites"] = json.dumps([])
+    response = es.index(index = "posts", body = parsed, doc_type = "posts")
+    print (response)
+
     return "post created"
 
 @app.route("/updatePost_api/<userid>", methods = ['POST'])
@@ -30,6 +37,10 @@ def updatePost_api(userid):
     #request.json will be the input received by the api
     #following code prints the json on console
     parsed = json.loads(request.json)
+    print (parsed["id"])
+    print("jyfyurfuirf7iri7r7ir7uir7ui")
+    #print(str(parsed))
+
     #print(json.dumps(parsed, indent=4, sort_keys=True))
     # write code to create a post
     return "posted"
