@@ -306,3 +306,40 @@ def progressbarData(userid):
     data = [sub1, sub2, sub3]
     return jsonify(data)
 
+@app.route("/pieChartData/<userid>", methods=["GET"])
+def pieChartData(userid):
+
+    sub1 = {
+        "name" :"sub1",
+        "value" : "175"
+    }
+    sub2 = {
+        "name": "sub2",
+        "value": "225"
+    }
+    sub3 = {
+        "name" : "sub3",
+        "value" : "500"
+    }
+    sub4 = {
+        "name" : "sub4",
+         "value" : "300"
+    }
+    data = [sub1, sub2, sub3,sub4]
+    return jsonify(data)
+
+@app.route("/userStatistics/<userid>", methods=["GET"])
+def userStatistics(userid):
+
+    data = {
+        "Posts Written" : "100",
+        "Posts Read" : "200",
+        "Upvotes Given" :"400",
+        "Upvotes Received" : "200",
+        "Downvotes Given": "400",
+        "Downvotes Received": "200"
+    }
+
+    return jsonify(data)
+
+

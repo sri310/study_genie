@@ -1,5 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
+     <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/echarts.js"></script>
     <h3>  Hello, {{current_user.username }} </h3><br>
      <div style="display:none;" id="userid">{{id}}</div>
     <h6> Last login :  {{ current_user.last_login }}</h6>
@@ -11,13 +13,17 @@
         <li class="list-group-item list-group-item-warning"><a class="text-dark" href="{{url_for('home')}}">Explore Posts</a></li>
         <li class="list-group-item list-group-item-warning"><a class="text-dark" href="{{url_for('discussions')}}">Discussion Forum</a></li>        
     </div>
-    <div class="col-md-1"></div>
-    <div class="col-md-4 progressChart"></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-4 progressChart"><div class="text-center text-danger font-weight-bold mb-4">User Progress</div></div>
+        <div class="col-md-1"></div>
+        <div class="col-md-4 userStatistics"><div class="text-center text-danger font-weight-bold mb-3">User Statistics</div></div>
+    </div><br><br>
+    <div class="row">
+        <div class="col-md-6 pieChart" style="width:500px; height: 300px;">Pie Chart</div>
     </div>
 
 
-    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
-    <script type="text/javascript" src="/static/js/echarts.js"></script>
+
     <script>
         var host = {{host|tojson}};
         $.ajax({
@@ -57,7 +63,102 @@
                 });
            }
          });
+        $.ajax({
+            type: "GET",
+            url: "http://"+host+"/pieChartData/"+{{current_user.id}},
+            contentType : "application/json",
+            success : function(data){
+                console.log(data);
+                console.log($(".pieChart"));
+                var legend = [];
+                $(".pieChart").ready(function(){
+                for (var i=0; i<data.length; i++){
+                    legend.push(data[i].name);
+                }
+                var myChart = echarts.init($(".pieChart")[0]);
+                option = {
+                    title : {
+                        text: 'Activity Distribution',
 
+                        x:'center'
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left',
+                        data: legend
+                    },
+                    series : [
+                        {
+                            name: '#Activities',
+                            type: 'pie',
+                            radius : '55%',
+                            center: ['50%', '60%'],
+                            data: data,
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+                myChart.resize(100,100,true);
+                console.log(myChart.getHeight());
+                console.log($(".pieChart").height());
+                });
+
+
+
+            }
+
+        });
+
+
+        $.ajax({
+            type: "GET",
+            url: "http://"+host+"/userStatistics/"+{{current_user.id}},
+            contentType : "application/json",
+            success : function(data){
+                console.log(data);
+                var rowItem = $("<div class='row mt-2'></div>");
+                var item = $("<div class = 'col-md-6 nopadding' id='item1'></div>");
+                $(item).append("Posts Written: "+data["Posts Written"]);
+                $(rowItem).append(item);
+
+                var item1 = $("<div class = 'col-md-6 nopadding' id='item1'></div>");
+                $(item1).append("Posts Read: "+data["Posts Read"]);
+                $(rowItem).append(item1);
+
+                var rowItem1 = $("<div class='row mt-2'></div>");
+                var item2 = $("<div class = 'col-md-6 nopadding' id='item1'></div>");
+                $(item2).append("Upvotes Given: "+data["Upvotes Given"]);
+                var item3 = $("<div class = 'col-md-6 nopadding ' id='item1'></div>");
+                $(item3).append("Upvotes Received: "+data["Upvotes Received"]);
+                $(rowItem1).append(item2);
+                $(rowItem1).append(item3);
+
+                var rowItem2 = $("<div class='row mt-2'></div>");
+                var item5 = $("<div class = 'col-md-6 nopadding' id='item1'></div>");
+                $(item5).append("Downvotes Given: "+data["Downvotes Given"]);
+                var item6 = $("<div class = 'col-md-6 nopadding' id='item6'></div>");
+                $(item6).append("Downvotes Received: "+data["Downvotes Received"]);
+                $(rowItem2).append(item5);
+                $(rowItem2).append(item6);
+
+                $(".userStatistics").append(rowItem);
+                $(".userStatistics").append(rowItem1);
+                $(".userStatistics").append(rowItem2);
+
+            }
+
+        });
 
     </script>
 
