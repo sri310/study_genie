@@ -4,7 +4,7 @@ from flask import render_template,url_for,flash,redirect,jsonify,request,g,sessi
 from datetime import datetime
 from appFolder import app,db
 from appFolder.forms import LoginForm, RegistrationForm, CreatePostForm, UpdatePostForm, SearchForm
-from appFolder.models import User
+from appFolder.models import User,Grades
 from flask_login import login_user, current_user, logout_user, login_required
 from appFolder import  apis
 import requests
@@ -88,6 +88,11 @@ def register():
                         school_year = form.school_year.data, gpa = form.gpa.data)
             db.session.add(user)
             db.session.commit()
+
+            for sub in form.courses.data:
+                grade = Grades(user_id=user.id,subject=sub,grade=form.gpa.data)
+                db.session.add(grade)
+                db.session.commit()
             flash(f'Account created for {form.username.data}!', 'success')
             login_user(user)
             return redirect(url_for('profile',userid=current_user.id))

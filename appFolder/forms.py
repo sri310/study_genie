@@ -16,7 +16,7 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     school_year = StringField('School year', validators=[DataRequired(), Length(min=2, max=20)])
     gpa = StringField('GPA', validators=[DataRequired(), Length(min=1, max=4)])
-    string_of_files = ['Sub1\r\nSub2\r\nSub3\r\n']
+    string_of_files = ['Adaptive_Web\r\nJava\r\nDatabase_Systems\r\n']
     list_of_files = string_of_files[0].split()
     # create a list of value/description tuples
     files = [(x, x) for x in list_of_files]

@@ -24,7 +24,7 @@ class Grades(db.Model):
     subject = db.Column(db.String(50),nullable=False)
     grade = db.Column(db.String(2), nullable = False)
     def __repr__(self):
-        return f"User('{self.user_id}', '{self.subject}','{self.grade}')"
+        return f"Grades('{self.user_id}', '{self.subject}','{self.grade}')"
 
 class Posts(db.Model):
      id = db.Column(db.Integer, primary_key=True)
@@ -47,9 +47,13 @@ class Activites(db.Model):
     content = db.Column(db.String(8000), nullable=False)
 
     def __repr__(self):
-        return f"User('{self.id}', '{self.user_id}','{self.post_id}','{self.type}','{self.timestamp}','{self.content}')"
+        return f"Activities('{self.id}', '{self.user_id}','{self.post_id}','{self.type}','{self.timestamp}','{self.content}')"
 
 
+class Searches(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    search_query = db.Column(db.String(8000), nullable=False)
 
-
-
+    def __repr__(self):
+        return f"Search('{self.id}', '{self.user_id}','{self.search_query}')"

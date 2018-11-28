@@ -239,48 +239,19 @@ def search_api(searchdata):
 
 @app.route("/subject_filter/<subject>", methods=['GET','POST'])
 def subjectfilter_api(subject):
-    post = {
-        "id" : "1",
-        'title' : "post_title",
-        "subject":"Adaptive web",
-        "content": " Filtered results for a subject. Search query results This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post4 = {
-        "id": "4",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": " Filtered results for a subject.Search query results This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post2 = {
-        "id": "2",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": " Filtered results for a subject. Search query results This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post3 = {
-        "id": "3",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": " Filtered results for a subject .Search query results This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
     posts = []
-    posts.append(post)
-    posts.append(post2)
-    posts.append(post3)
-    posts.append(post4)
-
+    results = Posts.query.filter_by(subject=subject)
+    for result in results:
+        print(result)
+        post = {
+            "id": result.id,
+            'title': result.title,
+            "subject": result.subject,
+            "content": result.content,
+            "upvote": result.upvote,
+            "downvote": result.downvote
+        }
+        posts.append(post)
 
     return jsonify(posts)
 
