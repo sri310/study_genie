@@ -191,48 +191,16 @@ def recommendations_user(userid):
 
 @app.route("/search/<searchdata>", methods=['GET'])
 def search_api(searchdata):
-    post = {
-        "id" : "1",
-        'title' : "post_title",
-        "subject":"Adaptive web",
-        "content": " Search query results This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
+    search_object = {
+        "query": {
+            "match": {
+                "content": searchdata
+            }
+        }
     }
-    post4 = {
-        "id": "4",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": " Search query results This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post2 = {
-        "id": "2",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": " Search query results This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post3 = {
-        "id": "3",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": " Search query results This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    posts = []
-    posts.append(post)
-    posts.append(post2)
-    posts.append(post3)
-    posts.append(post4)
 
+    response = es.search(index = "posts", body = search_object)
+    posts = [res["_source"] for res in response["hits"]["hits"]]
 
     return jsonify(posts)
 
