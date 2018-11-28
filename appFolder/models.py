@@ -32,9 +32,11 @@ class Posts(db.Model):
      subject = db.Column(db.String(50), nullable=False)
      title = db.Column(db.String(50),nullable=False)
      content = db.Column(db.String(8000), nullable=False)
+     upvote = db.Column(db.Integer,nullable=False)
+     downvote = db.Column(db.Integer,nullable=False)
 
      def __repr__(self):
-         return f"Posts('{self.id}', '{self.user_id}','{self.content}','{self.subject}','{self.title}')"
+         return f"Posts('{self.id}', '{self.user_id}','{self.content}','{self.subject}','{self.title}','{self.upvote}','{self.downvote}')"
 
 class Activites(db.Model):
     id = db.Column(db.Integer, primary_key=True)

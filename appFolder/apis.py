@@ -20,7 +20,7 @@ def createPost_api(userid):
 
     parsed = json.loads(request.json)
 
-    post = Posts(user_id = userid,subject=parsed["subject"],content=parsed["content"],title=parsed["title"])
+    post = Posts(user_id = userid,subject=parsed["subject"],content=parsed["content"],title=parsed["title"],upvote=0,downvote=0)
 
     db.session.add(post)
     db.session.commit()
@@ -124,26 +124,22 @@ def recommendations():
 
 @app.route("/recommendations/<userid>/myPosts", methods=['GET'])
 def myPosts(userid):
-    post = {
-        "id" : "1",
-        'title' : "post_title",
-        "subject":"Adaptive web",
-        "content": "This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote" : "29",
-        "downvote": "49"
-    }
-    posts = []
+   posts = []
+   results = Posts.query.filter_by(user_id=userid)
+   for result in results:
+       print(result)
+       post = {
+           "id": result.id ,
+           'title': result.title,
+           "subject":result.subject,
+           "content": result.content,
+           "upvote": result.upvote,
+           "downvote": result.downvote
+       }
+       posts.append(post)
 
-    posts.append(post)
-    posts.append(post)
-    posts.append(post)
-    posts.append(post)
-    posts.append(post)
-    posts.append(post)
-    posts.append(post)
-    posts.append(post)
-    return jsonify(posts)
+   return jsonify(posts)
+
 
 
 @app.route("/recommendations/<userid>", methods=['GET'])
