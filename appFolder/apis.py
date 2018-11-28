@@ -55,12 +55,13 @@ def deletePost_api(userid):
     return "posted"
 
 
-@app.route("/vote_api/<userid>", methods = ['POST'])
-def vote_api(userid):
-    #request.json will be the input received by the api
-    #following code prints the json on console
-    print(request.json)
-    # return incremented/decremented value
+@app.route("/vote_api", methods = ['POST'])
+def vote_api():
+    b = json.loads(request.json)
+    print(json.dumps(b, indent=4, sort_keys=True))
+    print(b["userid"])
+
+   
     return "1"
 
 
