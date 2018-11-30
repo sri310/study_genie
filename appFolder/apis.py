@@ -26,7 +26,7 @@ def createPost_api(userid):
     db.session.commit()
 
     activity = Activites(user_id=userid, post_id=post.id, type="create", timestamp=datetime.now(),
-                         content="NA")
+                         content=parsed["subject"])
     db.session.add(activity)
     db.session.commit()
 
@@ -39,33 +39,27 @@ def createPost_api(userid):
 
 @app.route("/updatePost_api/<userid>", methods = ['POST'])
 def updatePost_api(userid):
-    # request.json will be the input received by the api
-    # following code prints the json on console
     parsed = json.loads(request.json)
     print(parsed["postid"])
     print(parsed["content"])
     post = Posts.query.filter_by(id=parsed["postid"]).first()
     post.content = parsed["content"]
-    # print(post)
     activity = Activites(user_id=userid, post_id=parsed["postid"], type="update", timestamp=datetime.now(),
-                         content="NA")
+                         content=post.subject)
     db.session.add(activity)
     db.session.commit()
 
-    # print("jyfyurfuirf7iri7r7ir7uir7ui")
-    # print(str(parsed))
-
-    # print(json.dumps(parsed, indent=4, sort_keys=True))
-    # write code to create a post
     return "updated"
 
 @app.route("/deletePost_api", methods = ['POST'])
 def deletePost_api():
     parsed = json.loads(request.json)
     print(parsed)
-    Posts.query.filter_by(id=parsed["id"]).delete()
+    post = Posts.query.filter_by(id=parsed["id"])
+
     activity = Activites(user_id=parsed["userid"], post_id=parsed["id"], type="delete", timestamp=datetime.now(),
-                         content="NA")
+                         content=post.subject)
+    Posts.query.filter_by(id=parsed["id"]).delete()
     db.session.add(activity)
     db.session.commit()
     return "deleted"
@@ -74,14 +68,13 @@ def deletePost_api():
 @app.route("/vote_api", methods = ['POST'])
 def vote_api():
     parsed = json.loads(request.json)
-    # print(parsed)
     result = 0
     if (parsed["activity"] == 'upvote'):
         post = Posts.query.filter_by(id=parsed["postid"]).first()
         post.upvote += 1
         result = post.upvote
         activity = Activites(user_id=parsed["userid"], post_id=parsed["postid"], type="upvote", timestamp=datetime.now(),
-                             content="upvote")
+                             content=post.subject)
         db.session.add(activity)
         db.session.commit()
     else:
@@ -90,22 +83,23 @@ def vote_api():
             post.downvote += 1
             result = post.downvote
             activity = Activites(user_id=parsed["userid"], post_id=parsed["id"], type="downvote",
-                                 timestamp=datetime.now(), content="downvote")
+                                 timestamp=datetime.now(), content=post.subject)
             db.session.add(activity)
             db.session.commit()
     return str(result)
 
 
-@app.route("/read_api/<userid>", methods = ['POST'])
-def read_api(userid):
-    print(request.json)
-    #request.json will be the input received by the api
-    #following code prints the json on console
-    # parsed = json.loads(request.json)
-    # print(json.dumps(parsed, indent=4, sort_keys=True))
-    # write code to create a post
-    print("xxx")
-    return "posted"
+@app.route("/read_api", methods = ['POST'])
+def read_api():
+    parsed = request.json
+    print(parsed)
+    post = Posts.query.filter_by(id=parsed["postid"])
+    activity = Activites(user_id=parsed["user_id"], post_id=parsed["postid"], type="read",
+                         timestamp=datetime.now(), content=post.subject)
+    db.session.add(activity)
+    db.session.commit()
+    return "read"
+
 
 @app.route("/recommendations", methods=['GET'])
 def recommendations():
@@ -153,25 +147,6 @@ def recommendations():
 
 
     return jsonify(posts)
-
-@app.route("/recommendations/<userid>/myPosts", methods=['GET'])
-def myPosts(userid):
-   posts = []
-   results = Posts.query.filter_by(user_id=userid)
-   for result in results:
-       print(result)
-       post = {
-           "id": result.id ,
-           'title': result.title,
-           "subject":result.subject,
-           "content": result.content,
-           "upvote": result.upvote,
-           "downvote": result.downvote
-       }
-       posts.append(post)
-
-   return jsonify(posts)
-
 
 
 @app.route("/recommendations/<userid>", methods=['GET'])
@@ -221,8 +196,29 @@ def recommendations_user(userid):
     return jsonify(posts)
 
 
-@app.route("/search/<searchdata>", methods=['GET'])
-def search_api(searchdata):
+@app.route("/recommendations/<userid>/myPosts", methods=['GET'])
+def myPosts(userid):
+   posts = []
+   results = Posts.query.filter_by(user_id=userid)
+   for result in results:
+       print(result)
+       post = {
+           "id": result.id ,
+           'title': result.title,
+           "subject":result.subject,
+           "content": result.content,
+           "upvote": result.upvote,
+           "downvote": result.downvote
+       }
+       posts.append(post)
+
+   return jsonify(posts)
+
+
+@app.route("/search", methods=['GET'])
+def search_api():
+    parsed = json.loads(request.json)
+    searchdata = parsed["search"]
     search_object = {
         "query": {
             "match": {
@@ -233,6 +229,10 @@ def search_api(searchdata):
 
     response = es.search(index = "posts", body = search_object)
     posts = [res["_source"] for res in response["hits"]["hits"]]
+    activity = Activites(user_id=parsed["userid"], post_id="0", type="search", timestamp=datetime.now(),
+                         content=searchdata)
+    db.session.add(activity)
+    db.session.commit()
 
     return jsonify(posts)
 
@@ -275,6 +275,7 @@ def progressbarData(userid):
 
 @app.route("/pieChartData/<userid>", methods=["GET"])
 def pieChartData(userid):
+    
     sub1 = {
         "name": "Adaptive_Web",
         "value": "175"
@@ -287,24 +288,19 @@ def pieChartData(userid):
         "name": "Database_Systems",
         "value": "500"
     }
-    """sub4 = {
-        "name" : "sub4",
-         "value" : "300"
-    }"""
+
     data = [sub1, sub2, sub3]
     return jsonify(data)
 
 @app.route("/userStatistics/<userid>", methods=["GET"])
 def userStatistics(userid):
-
-    data = {
-        "Posts Written" : "100",
-        "Posts Read" : "200",
-        "Upvotes Given" :"400",
-        "Upvotes Received" : "200",
-        "Downvotes Given": "400",
-        "Downvotes Received": "200"
-    }
+    data={}
+    data["Posts Written"] = Activites.query.filter_by(user_id=userid,type="create").count()
+    data["Posts Read"] = Activites.query.filter_by(user_id=userid,type="read").count()
+    data["Upvotes Given"] = Activites.query.filter_by(user_id=userid,type="upvote").count()
+    data["Downvotes Given"] = Activites.query.filter_by(user_id=userid,type="downvote").count()
+    data["Upvotes Received"] = "2"
+    data["Downvotes Received"] = "2"
 
     return jsonify(data)
 

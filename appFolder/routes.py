@@ -22,8 +22,17 @@ def home():
     data = requests.get("http://"+request.host+"/recommendations").text
     if form.validate_on_submit():
         print(form.search.data)
-        searchdata = form.search.data
-        searchdata = requests.get("http://" + request.host + "/search/"+searchdata).text
+        #searchdata = json.loads(form.search.data)
+        #print(searchdata)
+        data = json.dumps(form.data)
+
+        dataJSON = json.loads(data)
+        #print(dataJSON)
+        userid = current_user.id
+        dataJSON['userid'] = userid
+        searchdata = json.dumps(dataJSON)
+        url = "http://" + request.host + "/search"
+        searchdata = requests.get(url=url,json=searchdata)
         return render_template('home.html', title='home', data=searchdata, form=form, host = request.host)
     if current_user.is_authenticated:
         searchdata = requests.get("http://" + request.host + "/recommendations/" + str(current_user.id)).text
