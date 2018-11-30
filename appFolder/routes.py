@@ -55,7 +55,8 @@ def updatePost(data):
         dataJSON =json.loads(data)
         dataJSON['postid'] =postid
         data  = json.dumps(dataJSON)
-        url = "http://"+request.host+"/updatePost_api"+str(current_user.id)
+        print(data)
+        url = "http://"+request.host+"/updatePost_api"
         requests.post(url=url,json=data)
         flash(f'Updated post', 'success')
         return redirect(url_for('getMyPosts', userid=current_user.id))
@@ -64,7 +65,7 @@ def updatePost(data):
 @app.route("/delete/<postid>")
 @login_required
 def deletePost(postid):
-    url = "http://" + request.host + "/deletePost_api"+str(current_user.id)
+    url = "http://" + request.host + "/deletePost_api"
     data = postid
     requests.post(url=url, json=data)
     flash(f'Deleted post', 'success')
