@@ -37,13 +37,15 @@
                 var footer = $("<div class='row justify-content-center mt-3'><a href='#' class='card-link update col-md-5 text-center'>Update</a><a href='#' class='card-link delete col-md-5 text-center'>Delete</a></div>");
 
                 var upvote = $("<a href='#' class='card-link float-left upvote text-success'>Upvote &nbsp;</a>");
-                var upvoteText = $("<a href='#' class='card-link float-left upvote nopadding text-success'>2</a>");
-                var downvoteText = $("<a href='#' class='card-link float-right upvote text-danger nopadding'>10</a>");
+                var upvoteText = $("<a href='#' class='card-link float-left upvote nopadding text-success'></a>");
+                var downvoteText = $("<a href='#' class='card-link float-right upvote text-danger nopadding'></a>");
                 var downvote = $("<a href='#' class='card-link float-right upvote text-danger ml-2'>DownVote&nbsp;</a>");
 
                 $(title).append(data[o].title);
                 $(subject).append(data[o].subject);
                 $(content).append(data[o].content);
+                $(upvoteText).append(data[o].upvote);
+                $(downvoteText).append(data[o].downvote);
 
 
                 $(votes).append(upvote);
