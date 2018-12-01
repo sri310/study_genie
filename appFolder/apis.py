@@ -258,36 +258,34 @@ def subjectfilter_api(subject):
 
 @app.route("/progressbarData/<userid>", methods=["GET"])
 def progressbarData(userid):
-    sub1 = {
-        "name": "Adaptive_Web",
-        "value": "75"
-    }
-    sub2 = {
-        "name": "Java",
-        "value": "25"
-    }
-    sub3 = {
-        "name": "Database_Systems",
-        "value": "50"
-    }
+    sub1={}
+    sub1["name"]="Adaptive_Web"
+    sub1["value"]=Activites.query.filter_by(content="Adaptive_Web",type="read",user_id=userid).distinct(Activites.post_id).count()
+
+    sub2 = {}
+    sub2["name"] = "Java"
+    sub2["value"] = Activites.query.filter_by(content="Java", type="read",user_id=userid).distinct(Activites.post_id).count()
+
+    sub3 = {}
+    sub3["name"] = "Database_Systems"
+    sub3["value"] = Activites.query.filter_by(content="Database_Systems", type="read",user_id=userid).distinct(Activites.post_id).count()
+
     data = [sub1, sub2, sub3]
     return jsonify(data)
 
 @app.route("/pieChartData/<userid>", methods=["GET"])
 def pieChartData(userid):
-    
-    sub1 = {
-        "name": "Adaptive_Web",
-        "value": "175"
-    }
-    sub2 = {
-        "name": "Java",
-        "value": "225"
-    }
-    sub3 = {
-        "name": "Database_Systems",
-        "value": "500"
-    }
+    sub1 = {}
+    sub1["name"] = "Adaptive_Web"
+    sub1["value"] = Activites.query.filter_by(content="Adaptive_Web", user_id=userid).count()
+
+    sub2 = {}
+    sub2["name"] = "Java"
+    sub2["value"] = Activites.query.filter_by(content="Java", user_id=userid).count()
+
+    sub3 = {}
+    sub3["name"] = "Database_Systems"
+    sub3["value"] = Activites.query.filter_by(content="Database_Systems", user_id=userid).count()
 
     data = [sub1, sub2, sub3]
     return jsonify(data)
