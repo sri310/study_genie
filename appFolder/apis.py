@@ -1,15 +1,21 @@
 import json
-
+import random
 from flask import render_template,url_for,flash,redirect,jsonify,request,g,session,current_app
-from datetime import datetime
+from datetime import datetime, timedelta
 from appFolder import app,db
 from appFolder.forms import LoginForm, RegistrationForm, CreatePostForm
 from appFolder.models import User,Posts,Activites
 from flask_login import login_user, current_user, logout_user, login_required
 
+
 from elasticsearch import Elasticsearch
 
 es = Elasticsearch([{'host': 'localhost', 'port': '9200'}])
+
+def gettimestamp():
+    days_to_subtract = random.randint(1,30)
+    d = (datetime.today() - timedelta(days=days_to_subtract))
+    return d
 
 @app.route("/testapi", methods = ['GET'])
 def testapi():
@@ -24,8 +30,8 @@ def createPost_api(userid):
 
     db.session.add(post)
     db.session.commit()
-
-    activity = Activites(user_id=userid, post_id=post.id, type="create", timestamp=datetime.now(),
+    date = gettimestamp()
+    activity = Activites(user_id=userid, post_id=post.id, type="create", timestamp=date,
                          content=parsed["subject"])
     db.session.add(activity)
     db.session.commit()
@@ -44,7 +50,8 @@ def updatePost_api(userid):
     print(parsed["content"])
     post = Posts.query.filter_by(id=parsed["postid"]).first()
     post.content = parsed["content"]
-    activity = Activites(user_id=userid, post_id=parsed["postid"], type="update", timestamp=datetime.now(),
+    date = gettimestamp()
+    activity = Activites(user_id=userid, post_id=parsed["postid"], type="update", timestamp=date,
                          content=post.subject)
     db.session.add(activity)
     db.session.commit()
@@ -55,9 +62,9 @@ def updatePost_api(userid):
 def deletePost_api():
     parsed = json.loads(request.json)
     print(parsed)
-    post = Posts.query.filter_by(id=parsed["id"])
-
-    activity = Activites(user_id=parsed["userid"], post_id=parsed["id"], type="delete", timestamp=datetime.now(),
+    post = Posts.query.filter_by(id=parsed["id"]).first()
+    date = gettimestamp()
+    activity = Activites(user_id=parsed["userid"], post_id=parsed["id"], type="delete", timestamp=date,
                          content=post.subject)
     Posts.query.filter_by(id=parsed["id"]).delete()
     db.session.add(activity)
@@ -73,7 +80,8 @@ def vote_api():
         post = Posts.query.filter_by(id=parsed["postid"]).first()
         post.upvote += 1
         result = post.upvote
-        activity = Activites(user_id=parsed["userid"], post_id=parsed["postid"], type="upvote", timestamp=datetime.now(),
+        date = gettimestamp()
+        activity = Activites(user_id=parsed["userid"], post_id=parsed["postid"], type="upvote", timestamp=date,
                              content=post.subject)
         db.session.add(activity)
         db.session.commit()
@@ -82,8 +90,9 @@ def vote_api():
             post = Posts.query.filter_by(id=parsed["postid"]).first()
             post.downvote += 1
             result = post.downvote
+            date = gettimestamp()
             activity = Activites(user_id=parsed["userid"], post_id=parsed["id"], type="downvote",
-                                 timestamp=datetime.now(), content=post.subject)
+                                 timestamp=date, content=post.subject)
             db.session.add(activity)
             db.session.commit()
     return str(result)
@@ -94,8 +103,9 @@ def read_api():
     parsed = request.json
     print(parsed)
     post = Posts.query.filter_by(id=parsed["postid"])
+    date = gettimestamp()
     activity = Activites(user_id=parsed["user_id"], post_id=parsed["postid"], type="read",
-                         timestamp=datetime.now(), content=post.subject)
+                         timestamp=date, content=post.subject)
     db.session.add(activity)
     db.session.commit()
     return "read"
@@ -229,7 +239,7 @@ def search_api():
 
     response = es.search(index = "posts", body = search_object)
     posts = [res["_source"] for res in response["hits"]["hits"]]
-    activity = Activites(user_id=parsed["userid"], post_id="0", type="search", timestamp=datetime.now(),
+    activity = Activites(user_id=parsed["userid"], post_id="0", type="search", timestamp=datetime.today().strftime('%Y-%m-%d'),
                          content=searchdata)
     db.session.add(activity)
     db.session.commit()
@@ -285,6 +295,7 @@ def pieChartData(userid):
 
     sub3 = {}
     sub3["name"] = "Database_Systems"
+    sub3["name"] = "Database_Systems"
     sub3["value"] = Activites.query.filter_by(content="Database_Systems", user_id=userid).count()
 
     data = [sub1, sub2, sub3]
@@ -305,7 +316,20 @@ def userStatistics(userid):
 
 @app.route("/lineChart/<userid>", methods=["GET"])
 def lineChart(userid):
-    data = [["2000-06-05", 116], ["2000-06-06", 129], ["2000-06-07", 135], ["2000-06-08", 86], ["2000-06-09", 73],
+    data = []
+    #print(userid)
+    list_timestamps = Activites.query.filter_by(user_id=userid).group_by(Activites.timestamp).with_entities(Activites.timestamp)
+
+
+    for list_ts in list_timestamps:
+        for timestamp in list_ts:
+           # print(b)
+            count = Activites.query.filter_by(timestamp=timestamp,user_id=userid).count()
+            element= [timestamp.strftime("%Y-%m-%d"),count]
+            data.append(element)
+    #print(data)
+
+    """ data = [["2000-06-05", 116], ["2000-06-06", 129], ["2000-06-07", 135], ["2000-06-08", 86], ["2000-06-09", 73],
             ["2000-06-10", 85], ["2000-06-11", 73], ["2000-06-12", 68], ["2000-06-13", 92], ["2000-06-14", 130],
             ["2000-06-15", 245], ["2000-06-16", 139], ["2000-06-17", 115], ["2000-06-18", 111], ["2000-06-19", 309],
             ["2000-06-20", 206], ["2000-06-21", 137], ["2000-06-22", 128], ["2000-06-23", 85], ["2000-06-24", 94],
@@ -315,6 +339,8 @@ def lineChart(userid):
             ["2000-07-10", 91], ["2000-07-11", 92], ["2000-07-12", 113], ["2000-07-13", 107], ["2000-07-14", 131],
             ["2000-07-15", 111], ["2000-07-16", 64], ["2000-07-17", 69], ["2000-07-18", 88], ["2000-07-19", 77],
             ["2000-07-20", 83], ["2000-07-21", 111], ["2000-07-22", 57], ["2000-07-23", 55], ["2000-07-24", 60]];
+    """
+
 
     return jsonify(data)
 
