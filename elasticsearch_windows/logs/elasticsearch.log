@@ -1,170 +1,54 @@
-[2018-11-25T18:33:11,324][INFO ][o.e.n.Node               ] [] initializing ...
-[2018-11-25T18:33:11,430][INFO ][o.e.e.NodeEnvironment    ] [Uv8zMV9] using [1] data paths, mounts [[Abishek's HDD (D:)]], net usable_space [908.1gb], net total_space [931.4gb], types [NTFS]
-[2018-11-25T18:33:11,430][INFO ][o.e.e.NodeEnvironment    ] [Uv8zMV9] heap size [990.7mb], compressed ordinary object pointers [true]
-[2018-11-25T18:33:11,461][INFO ][o.e.n.Node               ] [Uv8zMV9] node name derived from node ID [Uv8zMV9PQ46SKtFITiHtGw]; set [node.name] to override
-[2018-11-25T18:33:11,462][INFO ][o.e.n.Node               ] [Uv8zMV9] version[6.4.2], pid[8328], build[default/zip/04711c2/2018-09-26T13:34:09.098244Z], OS[Windows 10/10.0/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_181/25.181-b13]
-[2018-11-25T18:33:11,464][INFO ][o.e.n.Node               ] [Uv8zMV9] JVM arguments [-Xms1g, -Xmx1g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -Djava.io.tmpdir=C:\Users\ravia\AppData\Local\Temp\elasticsearch, -XX:+HeapDumpOnOutOfMemoryError, -XX:HeapDumpPath=data, -XX:ErrorFile=logs/hs_err_pid%p.log, -XX:+PrintGCDetails, -XX:+PrintGCDateStamps, -XX:+PrintTenuringDistribution, -XX:+PrintGCApplicationStoppedTime, -Xloggc:logs/gc.log, -XX:+UseGCLogFileRotation, -XX:NumberOfGCLogFiles=32, -XX:GCLogFileSize=64m, -Delasticsearch, -Des.path.home=D:\Arizona State University\My Github\study_genie\elasticsearch_windows, -Des.path.conf=D:\Arizona State University\My Github\study_genie\elasticsearch_windows\config, -Des.distribution.flavor=default, -Des.distribution.type=zip]
-[2018-11-25T18:33:14,815][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [aggs-matrix-stats]
-[2018-11-25T18:33:14,815][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [analysis-common]
-[2018-11-25T18:33:14,816][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [ingest-common]
-[2018-11-25T18:33:14,816][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-expression]
-[2018-11-25T18:33:14,816][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-mustache]
-[2018-11-25T18:33:14,816][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-painless]
-[2018-11-25T18:33:14,817][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [mapper-extras]
-[2018-11-25T18:33:14,817][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [parent-join]
-[2018-11-25T18:33:14,817][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [percolator]
-[2018-11-25T18:33:14,818][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [rank-eval]
-[2018-11-25T18:33:14,818][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [reindex]
-[2018-11-25T18:33:14,819][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [repository-url]
-[2018-11-25T18:33:14,819][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [transport-netty4]
-[2018-11-25T18:33:14,819][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [tribe]
-[2018-11-25T18:33:14,820][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-core]
-[2018-11-25T18:33:14,820][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-deprecation]
-[2018-11-25T18:33:14,821][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-graph]
-[2018-11-25T18:33:14,821][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-logstash]
-[2018-11-25T18:33:14,822][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-ml]
-[2018-11-25T18:33:14,822][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-monitoring]
-[2018-11-25T18:33:14,823][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-rollup]
-[2018-11-25T18:33:14,823][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-security]
-[2018-11-25T18:33:14,823][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-sql]
-[2018-11-25T18:33:14,824][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-upgrade]
-[2018-11-25T18:33:14,824][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-watcher]
-[2018-11-25T18:33:14,824][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] no plugins loaded
-[2018-11-25T18:33:19,135][INFO ][o.e.x.s.a.s.FileRolesStore] [Uv8zMV9] parsed [0] roles from file [D:\Arizona State University\My Github\study_genie\elasticsearch_windows\config\roles.yml]
-[2018-11-25T18:33:19,784][INFO ][o.e.x.m.j.p.l.CppLogMessageHandler] [controller/3496] [Main.cc@109] controller (64 bit): Version 6.4.2 (Build 660eefe6f2ea55) Copyright (c) 2018 Elasticsearch BV
-[2018-11-25T18:33:20,250][DEBUG][o.e.a.ActionModule       ] Using REST wrapper from plugin org.elasticsearch.xpack.security.Security
-[2018-11-25T18:33:20,576][INFO ][o.e.d.DiscoveryModule    ] [Uv8zMV9] using discovery type [zen]
-[2018-11-25T18:33:21,416][INFO ][o.e.n.Node               ] [Uv8zMV9] initialized
-[2018-11-25T18:33:21,416][INFO ][o.e.n.Node               ] [Uv8zMV9] starting ...
-[2018-11-25T18:33:21,961][INFO ][o.e.t.TransportService   ] [Uv8zMV9] publish_address {127.0.0.1:9300}, bound_addresses {127.0.0.1:9300}, {[::1]:9300}
-[2018-11-25T18:33:25,107][INFO ][o.e.c.s.MasterService    ] [Uv8zMV9] zen-disco-elected-as-master ([0] nodes joined)[, ], reason: new_master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{zpnuraQ4SGK359UBzqTQLg}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true}
-[2018-11-25T18:33:25,118][INFO ][o.e.c.s.ClusterApplierService] [Uv8zMV9] new_master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{zpnuraQ4SGK359UBzqTQLg}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true}, reason: apply cluster state (from master [master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{zpnuraQ4SGK359UBzqTQLg}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true} committed version [1] source [zen-disco-elected-as-master ([0] nodes joined)[, ]]])
-[2018-11-25T18:33:25,747][INFO ][o.e.x.s.t.n.SecurityNetty4HttpServerTransport] [Uv8zMV9] publish_address {127.0.0.1:9200}, bound_addresses {127.0.0.1:9200}, {[::1]:9200}
-[2018-11-25T18:33:25,748][INFO ][o.e.n.Node               ] [Uv8zMV9] started
-[2018-11-25T18:33:25,790][WARN ][o.e.x.s.a.s.m.NativeRoleMappingStore] [Uv8zMV9] Failed to clear cache for realms [[]]
-[2018-11-25T18:33:25,853][INFO ][o.e.l.LicenseService     ] [Uv8zMV9] license [b84ce9ca-fcd5-4070-ab5e-f370cd06fb02] mode [basic] - valid
-[2018-11-25T18:33:25,875][INFO ][o.e.g.GatewayService     ] [Uv8zMV9] recovered [1] indices into cluster_state
-[2018-11-25T18:33:26,258][INFO ][o.e.c.r.a.AllocationService] [Uv8zMV9] Cluster health status changed from [RED] to [GREEN] (reason: [shards started [[recommendations][0]] ...]).
-[2018-11-25T18:35:53,713][INFO ][o.e.n.Node               ] [Uv8zMV9] stopping ...
-[2018-11-25T18:35:53,736][INFO ][o.e.x.w.WatcherService   ] [Uv8zMV9] stopping watch service, reason [shutdown initiated]
-[2018-11-25T18:35:54,015][INFO ][o.e.x.m.j.p.l.CppLogMessageHandler] [controller/3496] [Main.cc@148] Ml controller exiting
-[2018-11-25T18:35:54,016][INFO ][o.e.x.m.j.p.NativeController] Native controller process has stopped - no new native processes can be started
-[2018-11-25T18:35:54,567][INFO ][o.e.n.Node               ] [Uv8zMV9] stopped
-[2018-11-25T18:35:54,568][INFO ][o.e.n.Node               ] [Uv8zMV9] closing ...
-[2018-11-25T18:35:54,585][INFO ][o.e.n.Node               ] [Uv8zMV9] closed
-[2018-11-25T19:08:21,587][INFO ][o.e.n.Node               ] [] initializing ...
-[2018-11-25T19:08:21,668][INFO ][o.e.e.NodeEnvironment    ] [Uv8zMV9] using [1] data paths, mounts [[Abishek's HDD (D:)]], net usable_space [908.1gb], net total_space [931.4gb], types [NTFS]
-[2018-11-25T19:08:21,669][INFO ][o.e.e.NodeEnvironment    ] [Uv8zMV9] heap size [990.7mb], compressed ordinary object pointers [true]
-[2018-11-25T19:08:21,715][INFO ][o.e.n.Node               ] [Uv8zMV9] node name derived from node ID [Uv8zMV9PQ46SKtFITiHtGw]; set [node.name] to override
-[2018-11-25T19:08:21,717][INFO ][o.e.n.Node               ] [Uv8zMV9] version[6.4.2], pid[3716], build[default/zip/04711c2/2018-09-26T13:34:09.098244Z], OS[Windows 10/10.0/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_181/25.181-b13]
-[2018-11-25T19:08:21,717][INFO ][o.e.n.Node               ] [Uv8zMV9] JVM arguments [-Xms1g, -Xmx1g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -Djava.io.tmpdir=C:\Users\ravia\AppData\Local\Temp\elasticsearch, -XX:+HeapDumpOnOutOfMemoryError, -XX:HeapDumpPath=data, -XX:ErrorFile=logs/hs_err_pid%p.log, -XX:+PrintGCDetails, -XX:+PrintGCDateStamps, -XX:+PrintTenuringDistribution, -XX:+PrintGCApplicationStoppedTime, -Xloggc:logs/gc.log, -XX:+UseGCLogFileRotation, -XX:NumberOfGCLogFiles=32, -XX:GCLogFileSize=64m, -Delasticsearch, -Des.path.home=D:\Arizona State University\My Github\study_genie\elasticsearch_windows, -Des.path.conf=D:\Arizona State University\My Github\study_genie\elasticsearch_windows\config, -Des.distribution.flavor=default, -Des.distribution.type=zip]
-[2018-11-25T19:08:23,748][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [aggs-matrix-stats]
-[2018-11-25T19:08:23,749][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [analysis-common]
-[2018-11-25T19:08:23,750][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [ingest-common]
-[2018-11-25T19:08:23,750][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-expression]
-[2018-11-25T19:08:23,750][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-mustache]
-[2018-11-25T19:08:23,750][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-painless]
-[2018-11-25T19:08:23,751][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [mapper-extras]
-[2018-11-25T19:08:23,751][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [parent-join]
-[2018-11-25T19:08:23,752][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [percolator]
-[2018-11-25T19:08:23,752][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [rank-eval]
-[2018-11-25T19:08:23,753][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [reindex]
-[2018-11-25T19:08:23,753][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [repository-url]
-[2018-11-25T19:08:23,754][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [transport-netty4]
-[2018-11-25T19:08:23,754][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [tribe]
-[2018-11-25T19:08:23,755][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-core]
-[2018-11-25T19:08:23,755][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-deprecation]
-[2018-11-25T19:08:23,755][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-graph]
-[2018-11-25T19:08:23,756][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-logstash]
-[2018-11-25T19:08:23,757][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-ml]
-[2018-11-25T19:08:23,758][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-monitoring]
-[2018-11-25T19:08:23,758][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-rollup]
-[2018-11-25T19:08:23,764][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-security]
-[2018-11-25T19:08:23,764][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-sql]
-[2018-11-25T19:08:23,765][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-upgrade]
-[2018-11-25T19:08:23,765][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-watcher]
-[2018-11-25T19:08:23,768][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] no plugins loaded
-[2018-11-25T19:08:27,803][INFO ][o.e.x.s.a.s.FileRolesStore] [Uv8zMV9] parsed [0] roles from file [D:\Arizona State University\My Github\study_genie\elasticsearch_windows\config\roles.yml]
-[2018-11-25T19:08:28,524][INFO ][o.e.x.m.j.p.l.CppLogMessageHandler] [controller/972] [Main.cc@109] controller (64 bit): Version 6.4.2 (Build 660eefe6f2ea55) Copyright (c) 2018 Elasticsearch BV
-[2018-11-25T19:08:28,879][DEBUG][o.e.a.ActionModule       ] Using REST wrapper from plugin org.elasticsearch.xpack.security.Security
-[2018-11-25T19:08:29,223][INFO ][o.e.d.DiscoveryModule    ] [Uv8zMV9] using discovery type [zen]
-[2018-11-25T19:08:30,198][INFO ][o.e.n.Node               ] [Uv8zMV9] initialized
-[2018-11-25T19:08:30,198][INFO ][o.e.n.Node               ] [Uv8zMV9] starting ...
-[2018-11-25T19:08:30,757][INFO ][o.e.t.TransportService   ] [Uv8zMV9] publish_address {127.0.0.1:9300}, bound_addresses {127.0.0.1:9300}, {[::1]:9300}
-[2018-11-25T19:08:33,888][INFO ][o.e.c.s.MasterService    ] [Uv8zMV9] zen-disco-elected-as-master ([0] nodes joined)[, ], reason: new_master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{rAp9xn8hQB2xM05C2tBYiA}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true}
-[2018-11-25T19:08:33,900][INFO ][o.e.c.s.ClusterApplierService] [Uv8zMV9] new_master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{rAp9xn8hQB2xM05C2tBYiA}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true}, reason: apply cluster state (from master [master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{rAp9xn8hQB2xM05C2tBYiA}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true} committed version [1] source [zen-disco-elected-as-master ([0] nodes joined)[, ]]])
-[2018-11-25T19:08:34,348][INFO ][o.e.x.s.t.n.SecurityNetty4HttpServerTransport] [Uv8zMV9] publish_address {127.0.0.1:9200}, bound_addresses {127.0.0.1:9200}, {[::1]:9200}
-[2018-11-25T19:08:34,348][INFO ][o.e.n.Node               ] [Uv8zMV9] started
-[2018-11-25T19:08:34,504][WARN ][o.e.x.s.a.s.m.NativeRoleMappingStore] [Uv8zMV9] Failed to clear cache for realms [[]]
-[2018-11-25T19:08:34,549][INFO ][o.e.l.LicenseService     ] [Uv8zMV9] license [b84ce9ca-fcd5-4070-ab5e-f370cd06fb02] mode [basic] - valid
-[2018-11-25T19:08:34,560][INFO ][o.e.g.GatewayService     ] [Uv8zMV9] recovered [1] indices into cluster_state
-[2018-11-25T19:08:34,914][INFO ][o.e.c.r.a.AllocationService] [Uv8zMV9] Cluster health status changed from [RED] to [GREEN] (reason: [shards started [[recommendations][0]] ...]).
-[2018-11-25T19:12:40,569][INFO ][o.e.c.m.MetaDataCreateIndexService] [Uv8zMV9] [posts] creating index, cause [api], templates [], shards [1]/[0], mappings []
-[2018-11-25T19:12:41,274][INFO ][o.e.c.r.a.AllocationService] [Uv8zMV9] Cluster health status changed from [YELLOW] to [GREEN] (reason: [shards started [[posts][0]] ...]).
-[2018-11-25T19:24:48,885][INFO ][o.e.c.m.MetaDataMappingService] [Uv8zMV9] [posts/vzKScE8yTRqDgP3E1xOppg] create_mapping [posts]
-[2018-11-25T19:30:01,474][INFO ][o.e.c.m.MetaDataDeleteIndexService] [Uv8zMV9] [posts/vzKScE8yTRqDgP3E1xOppg] deleting index
-[2018-11-25T19:32:34,789][INFO ][o.e.c.m.MetaDataCreateIndexService] [Uv8zMV9] [posts] creating index, cause [api], templates [], shards [1]/[0], mappings []
-[2018-11-25T19:32:40,488][INFO ][o.e.c.r.a.AllocationService] [Uv8zMV9] Cluster health status changed from [YELLOW] to [GREEN] (reason: [shards started [[posts][0]] ...]).
-[2018-11-25T19:38:04,062][INFO ][o.e.c.m.MetaDataMappingService] [Uv8zMV9] [posts/GtuY5sd6QyaTNVpE4A9Bbg] create_mapping [posts]
-[2018-11-25T19:54:49,490][INFO ][o.e.c.m.MetaDataMappingService] [Uv8zMV9] [posts/GtuY5sd6QyaTNVpE4A9Bbg] update_mapping [posts]
-[2018-11-25T20:37:23,004][INFO ][o.e.n.Node               ] [Uv8zMV9] stopping ...
-[2018-11-25T20:37:23,033][INFO ][o.e.x.w.WatcherService   ] [Uv8zMV9] stopping watch service, reason [shutdown initiated]
-[2018-11-25T20:37:23,497][INFO ][o.e.x.m.j.p.l.CppLogMessageHandler] [controller/972] [Main.cc@148] Ml controller exiting
-[2018-11-25T20:37:23,504][INFO ][o.e.x.m.j.p.NativeController] Native controller process has stopped - no new native processes can be started
-[2018-11-25T20:37:28,993][INFO ][o.e.n.Node               ] [Uv8zMV9] stopped
-[2018-11-25T20:37:28,994][INFO ][o.e.n.Node               ] [Uv8zMV9] closing ...
-[2018-11-25T20:37:29,015][INFO ][o.e.n.Node               ] [Uv8zMV9] closed
-[2018-11-27T20:45:13,989][INFO ][o.e.n.Node               ] [] initializing ...
-[2018-11-27T20:45:14,130][INFO ][o.e.e.NodeEnvironment    ] [Uv8zMV9] using [1] data paths, mounts [[Abishek's HDD (D:)]], net usable_space [907.7gb], net total_space [931.4gb], types [NTFS]
-[2018-11-27T20:45:14,135][INFO ][o.e.e.NodeEnvironment    ] [Uv8zMV9] heap size [990.7mb], compressed ordinary object pointers [true]
-[2018-11-27T20:45:14,184][INFO ][o.e.n.Node               ] [Uv8zMV9] node name derived from node ID [Uv8zMV9PQ46SKtFITiHtGw]; set [node.name] to override
-[2018-11-27T20:45:14,185][INFO ][o.e.n.Node               ] [Uv8zMV9] version[6.4.2], pid[16472], build[default/zip/04711c2/2018-09-26T13:34:09.098244Z], OS[Windows 10/10.0/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_181/25.181-b13]
-[2018-11-27T20:45:14,186][INFO ][o.e.n.Node               ] [Uv8zMV9] JVM arguments [-Xms1g, -Xmx1g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -Djava.io.tmpdir=C:\Users\ravia\AppData\Local\Temp\elasticsearch, -XX:+HeapDumpOnOutOfMemoryError, -XX:HeapDumpPath=data, -XX:ErrorFile=logs/hs_err_pid%p.log, -XX:+PrintGCDetails, -XX:+PrintGCDateStamps, -XX:+PrintTenuringDistribution, -XX:+PrintGCApplicationStoppedTime, -Xloggc:logs/gc.log, -XX:+UseGCLogFileRotation, -XX:NumberOfGCLogFiles=32, -XX:GCLogFileSize=64m, -Delasticsearch, -Des.path.home=D:\Arizona State University\My Github\study_genie\elasticsearch_windows, -Des.path.conf=D:\Arizona State University\My Github\study_genie\elasticsearch_windows\config, -Des.distribution.flavor=default, -Des.distribution.type=zip]
-[2018-11-27T20:45:24,025][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [aggs-matrix-stats]
-[2018-11-27T20:45:24,025][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [analysis-common]
-[2018-11-27T20:45:24,028][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [ingest-common]
-[2018-11-27T20:45:24,028][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-expression]
-[2018-11-27T20:45:24,028][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-mustache]
-[2018-11-27T20:45:24,028][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-painless]
-[2018-11-27T20:45:24,029][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [mapper-extras]
-[2018-11-27T20:45:24,029][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [parent-join]
-[2018-11-27T20:45:24,030][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [percolator]
-[2018-11-27T20:45:24,030][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [rank-eval]
-[2018-11-27T20:45:24,031][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [reindex]
-[2018-11-27T20:45:24,031][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [repository-url]
-[2018-11-27T20:45:24,032][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [transport-netty4]
-[2018-11-27T20:45:24,032][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [tribe]
-[2018-11-27T20:45:24,033][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-core]
-[2018-11-27T20:45:24,034][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-deprecation]
-[2018-11-27T20:45:24,034][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-graph]
-[2018-11-27T20:45:24,034][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-logstash]
-[2018-11-27T20:45:24,036][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-ml]
-[2018-11-27T20:45:24,037][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-monitoring]
-[2018-11-27T20:45:24,037][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-rollup]
-[2018-11-27T20:45:24,037][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-security]
-[2018-11-27T20:45:24,037][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-sql]
-[2018-11-27T20:45:24,037][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-upgrade]
-[2018-11-27T20:45:24,037][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-watcher]
-[2018-11-27T20:45:24,051][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] no plugins loaded
-[2018-11-27T20:45:28,372][INFO ][o.e.x.s.a.s.FileRolesStore] [Uv8zMV9] parsed [0] roles from file [D:\Arizona State University\My Github\study_genie\elasticsearch_windows\config\roles.yml]
-[2018-11-27T20:45:29,298][INFO ][o.e.x.m.j.p.l.CppLogMessageHandler] [controller/16452] [Main.cc@109] controller (64 bit): Version 6.4.2 (Build 660eefe6f2ea55) Copyright (c) 2018 Elasticsearch BV
-[2018-11-27T20:45:29,670][DEBUG][o.e.a.ActionModule       ] Using REST wrapper from plugin org.elasticsearch.xpack.security.Security
-[2018-11-27T20:45:30,090][INFO ][o.e.d.DiscoveryModule    ] [Uv8zMV9] using discovery type [zen]
-[2018-11-27T20:45:31,220][INFO ][o.e.n.Node               ] [Uv8zMV9] initialized
-[2018-11-27T20:45:31,220][INFO ][o.e.n.Node               ] [Uv8zMV9] starting ...
-[2018-11-27T20:45:31,972][INFO ][o.e.t.TransportService   ] [Uv8zMV9] publish_address {127.0.0.1:9300}, bound_addresses {127.0.0.1:9300}, {[::1]:9300}
-[2018-11-27T20:45:35,194][INFO ][o.e.c.s.MasterService    ] [Uv8zMV9] zen-disco-elected-as-master ([0] nodes joined)[, ], reason: new_master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{yTm8cmtyTwe9RnZ0mqIZ9w}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true}
-[2018-11-27T20:45:35,228][INFO ][o.e.c.s.ClusterApplierService] [Uv8zMV9] new_master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{yTm8cmtyTwe9RnZ0mqIZ9w}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true}, reason: apply cluster state (from master [master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{yTm8cmtyTwe9RnZ0mqIZ9w}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true} committed version [1] source [zen-disco-elected-as-master ([0] nodes joined)[, ]]])
-[2018-11-27T20:45:35,830][INFO ][o.e.x.s.t.n.SecurityNetty4HttpServerTransport] [Uv8zMV9] publish_address {127.0.0.1:9200}, bound_addresses {127.0.0.1:9200}, {[::1]:9200}
-[2018-11-27T20:45:35,830][INFO ][o.e.n.Node               ] [Uv8zMV9] started
-[2018-11-27T20:45:36,105][WARN ][o.e.x.s.a.s.m.NativeRoleMappingStore] [Uv8zMV9] Failed to clear cache for realms [[]]
-[2018-11-27T20:45:36,193][INFO ][o.e.l.LicenseService     ] [Uv8zMV9] license [b84ce9ca-fcd5-4070-ab5e-f370cd06fb02] mode [basic] - valid
-[2018-11-27T20:45:36,211][INFO ][o.e.g.GatewayService     ] [Uv8zMV9] recovered [2] indices into cluster_state
-[2018-11-27T20:45:37,196][INFO ][o.e.c.r.a.AllocationService] [Uv8zMV9] Cluster health status changed from [RED] to [GREEN] (reason: [shards started [[recommendations][0]] ...]).
-[2018-11-27T20:49:39,068][INFO ][o.e.n.Node               ] [Uv8zMV9] stopping ...
-[2018-11-27T20:49:39,097][INFO ][o.e.x.w.WatcherService   ] [Uv8zMV9] stopping watch service, reason [shutdown initiated]
-[2018-11-27T20:49:39,448][INFO ][o.e.x.m.j.p.l.CppLogMessageHandler] [controller/16452] [Main.cc@148] Ml controller exiting
-[2018-11-27T20:49:39,480][INFO ][o.e.x.m.j.p.NativeController] Native controller process has stopped - no new native processes can be started
-[2018-11-27T20:49:40,020][INFO ][o.e.n.Node               ] [Uv8zMV9] stopped
-[2018-11-27T20:49:40,022][INFO ][o.e.n.Node               ] [Uv8zMV9] closing ...
-[2018-11-27T20:49:40,042][INFO ][o.e.n.Node               ] [Uv8zMV9] closed
+[2018-12-04T18:01:04,862][INFO ][o.e.n.Node               ] [] initializing ...
+[2018-12-04T18:01:05,135][INFO ][o.e.e.NodeEnvironment    ] [Uv8zMV9] using [1] data paths, mounts [[Abishek's HDD (D:)]], net usable_space [907.7gb], net total_space [931.4gb], types [NTFS]
+[2018-12-04T18:01:05,136][INFO ][o.e.e.NodeEnvironment    ] [Uv8zMV9] heap size [990.7mb], compressed ordinary object pointers [true]
+[2018-12-04T18:01:05,179][INFO ][o.e.n.Node               ] [Uv8zMV9] node name derived from node ID [Uv8zMV9PQ46SKtFITiHtGw]; set [node.name] to override
+[2018-12-04T18:01:05,182][INFO ][o.e.n.Node               ] [Uv8zMV9] version[6.4.2], pid[9040], build[default/zip/04711c2/2018-09-26T13:34:09.098244Z], OS[Windows 10/10.0/amd64], JVM[Oracle Corporation/Java HotSpot(TM) 64-Bit Server VM/1.8.0_181/25.181-b13]
+[2018-12-04T18:01:05,185][INFO ][o.e.n.Node               ] [Uv8zMV9] JVM arguments [-Xms1g, -Xmx1g, -XX:+UseConcMarkSweepGC, -XX:CMSInitiatingOccupancyFraction=75, -XX:+UseCMSInitiatingOccupancyOnly, -XX:+AlwaysPreTouch, -Xss1m, -Djava.awt.headless=true, -Dfile.encoding=UTF-8, -Djna.nosys=true, -XX:-OmitStackTraceInFastThrow, -Dio.netty.noUnsafe=true, -Dio.netty.noKeySetOptimization=true, -Dio.netty.recycler.maxCapacityPerThread=0, -Dlog4j.shutdownHookEnabled=false, -Dlog4j2.disable.jmx=true, -Djava.io.tmpdir=C:\Users\ravia\AppData\Local\Temp\elasticsearch, -XX:+HeapDumpOnOutOfMemoryError, -XX:HeapDumpPath=data, -XX:ErrorFile=logs/hs_err_pid%p.log, -XX:+PrintGCDetails, -XX:+PrintGCDateStamps, -XX:+PrintTenuringDistribution, -XX:+PrintGCApplicationStoppedTime, -Xloggc:logs/gc.log, -XX:+UseGCLogFileRotation, -XX:NumberOfGCLogFiles=32, -XX:GCLogFileSize=64m, -Delasticsearch, -Des.path.home=D:\Arizona State University\My Github\study_genie\elasticsearch_windows, -Des.path.conf=D:\Arizona State University\My Github\study_genie\elasticsearch_windows\config, -Des.distribution.flavor=default, -Des.distribution.type=zip]
+[2018-12-04T18:01:13,210][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [aggs-matrix-stats]
+[2018-12-04T18:01:13,210][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [analysis-common]
+[2018-12-04T18:01:13,212][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [ingest-common]
+[2018-12-04T18:01:13,215][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-expression]
+[2018-12-04T18:01:13,215][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-mustache]
+[2018-12-04T18:01:13,215][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [lang-painless]
+[2018-12-04T18:01:13,216][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [mapper-extras]
+[2018-12-04T18:01:13,217][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [parent-join]
+[2018-12-04T18:01:13,218][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [percolator]
+[2018-12-04T18:01:13,219][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [rank-eval]
+[2018-12-04T18:01:13,223][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [reindex]
+[2018-12-04T18:01:13,223][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [repository-url]
+[2018-12-04T18:01:13,224][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [transport-netty4]
+[2018-12-04T18:01:13,224][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [tribe]
+[2018-12-04T18:01:13,225][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-core]
+[2018-12-04T18:01:13,226][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-deprecation]
+[2018-12-04T18:01:13,227][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-graph]
+[2018-12-04T18:01:13,227][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-logstash]
+[2018-12-04T18:01:13,228][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-ml]
+[2018-12-04T18:01:13,228][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-monitoring]
+[2018-12-04T18:01:13,229][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-rollup]
+[2018-12-04T18:01:13,229][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-security]
+[2018-12-04T18:01:13,230][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-sql]
+[2018-12-04T18:01:13,230][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-upgrade]
+[2018-12-04T18:01:13,230][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] loaded module [x-pack-watcher]
+[2018-12-04T18:01:13,231][INFO ][o.e.p.PluginsService     ] [Uv8zMV9] no plugins loaded
+[2018-12-04T18:01:20,610][INFO ][o.e.x.s.a.s.FileRolesStore] [Uv8zMV9] parsed [0] roles from file [D:\Arizona State University\My Github\study_genie\elasticsearch_windows\config\roles.yml]
+[2018-12-04T18:01:21,908][INFO ][o.e.x.m.j.p.l.CppLogMessageHandler] [controller/20304] [Main.cc@109] controller (64 bit): Version 6.4.2 (Build 660eefe6f2ea55) Copyright (c) 2018 Elasticsearch BV
+[2018-12-04T18:01:22,736][DEBUG][o.e.a.ActionModule       ] Using REST wrapper from plugin org.elasticsearch.xpack.security.Security
+[2018-12-04T18:01:23,252][INFO ][o.e.d.DiscoveryModule    ] [Uv8zMV9] using discovery type [zen]
+[2018-12-04T18:01:24,667][INFO ][o.e.n.Node               ] [Uv8zMV9] initialized
+[2018-12-04T18:01:24,668][INFO ][o.e.n.Node               ] [Uv8zMV9] starting ...
+[2018-12-04T18:01:25,447][INFO ][o.e.t.TransportService   ] [Uv8zMV9] publish_address {127.0.0.1:9300}, bound_addresses {127.0.0.1:9300}, {[::1]:9300}
+[2018-12-04T18:01:28,591][INFO ][o.e.c.s.MasterService    ] [Uv8zMV9] zen-disco-elected-as-master ([0] nodes joined)[, ], reason: new_master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{bHr2Lat2S8aFGoDYvsfToA}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true}
+[2018-12-04T18:01:28,600][INFO ][o.e.c.s.ClusterApplierService] [Uv8zMV9] new_master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{bHr2Lat2S8aFGoDYvsfToA}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true}, reason: apply cluster state (from master [master {Uv8zMV9}{Uv8zMV9PQ46SKtFITiHtGw}{bHr2Lat2S8aFGoDYvsfToA}{127.0.0.1}{127.0.0.1:9300}{ml.machine_memory=8511496192, xpack.installed=true, ml.max_open_jobs=20, ml.enabled=true} committed version [1] source [zen-disco-elected-as-master ([0] nodes joined)[, ]]])
+[2018-12-04T18:01:29,167][INFO ][o.e.x.s.t.n.SecurityNetty4HttpServerTransport] [Uv8zMV9] publish_address {127.0.0.1:9200}, bound_addresses {127.0.0.1:9200}, {[::1]:9200}
+[2018-12-04T18:01:29,170][INFO ][o.e.n.Node               ] [Uv8zMV9] started
+[2018-12-04T18:01:29,597][WARN ][o.e.x.s.a.s.m.NativeRoleMappingStore] [Uv8zMV9] Failed to clear cache for realms [[]]
+[2018-12-04T18:01:29,695][INFO ][o.e.l.LicenseService     ] [Uv8zMV9] license [b84ce9ca-fcd5-4070-ab5e-f370cd06fb02] mode [basic] - valid
+[2018-12-04T18:01:29,756][INFO ][o.e.g.GatewayService     ] [Uv8zMV9] recovered [2] indices into cluster_state
+[2018-12-04T18:01:31,040][INFO ][o.e.c.r.a.AllocationService] [Uv8zMV9] Cluster health status changed from [RED] to [GREEN] (reason: [shards started [[recommendations][0]] ...]).
+[2018-12-04T19:30:05,734][INFO ][o.e.n.Node               ] [Uv8zMV9] stopping ...
+[2018-12-04T19:30:05,746][INFO ][o.e.x.w.WatcherService   ] [Uv8zMV9] stopping watch service, reason [shutdown initiated]
+[2018-12-04T19:30:06,122][INFO ][o.e.x.m.j.p.l.CppLogMessageHandler] [controller/20304] [Main.cc@148] Ml controller exiting
+[2018-12-04T19:30:06,175][INFO ][o.e.x.m.j.p.NativeController] Native controller process has stopped - no new native processes can be started
+[2018-12-04T19:30:06,216][INFO ][o.e.n.Node               ] [Uv8zMV9] stopped
+[2018-12-04T19:30:06,216][INFO ][o.e.n.Node               ] [Uv8zMV9] closing ...
+[2018-12-04T19:30:06,232][INFO ][o.e.n.Node               ] [Uv8zMV9] closed

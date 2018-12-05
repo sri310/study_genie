@@ -7,6 +7,8 @@ from appFolder.forms import LoginForm, RegistrationForm, CreatePostForm
 from appFolder.models import User,Posts,Activites
 from flask_login import login_user, current_user, logout_user, login_required
 
+import sqlite3
+
 
 from elasticsearch import Elasticsearch
 
@@ -36,18 +38,17 @@ def createPost_api(userid):
     db.session.add(activity)
     db.session.commit()
 
-    parsed["post_id"] = post.id
-    parsed["activites"] = json.dumps([])
-    response = es.index(index="posts", body=parsed, doc_type="posts")
-    # print (response)
+    obj = json.dumps({})
+    obj["content"] = post.content
+    obj["post_id"] = post.id
+
+    response = es.index(index="posts", body=obj, doc_type="posts")
 
     return "post created"
 
 @app.route("/updatePost_api/<userid>", methods = ['POST'])
 def updatePost_api(userid):
     parsed = json.loads(request.json)
-    print(parsed["postid"])
-    print(parsed["content"])
     post = Posts.query.filter_by(id=parsed["postid"]).first()
     post.content = parsed["content"]
     date = gettimestamp()
@@ -61,7 +62,6 @@ def updatePost_api(userid):
 @app.route("/deletePost_api", methods = ['POST'])
 def deletePost_api():
     parsed = json.loads(request.json)
-    print(parsed)
     post = Posts.query.filter_by(id=parsed["id"]).first()
     date = gettimestamp()
     activity = Activites(user_id=parsed["userid"], post_id=parsed["id"], type="delete", timestamp=date,
@@ -101,7 +101,6 @@ def vote_api():
 @app.route("/read_api", methods = ['POST'])
 def read_api():
     parsed = request.json
-    print(parsed)
     post = Posts.query.filter_by(id=parsed["postid"])
     date = gettimestamp()
     activity = Activites(user_id=parsed["user_id"], post_id=parsed["postid"], type="read",
@@ -111,99 +110,60 @@ def read_api():
     return "read"
 
 
+def getRequiredPosts(query):
+	conn = sqlite3.connect("D:\\Arizona State University\\My Github\\study_genie\\appFolder\\site.db")
+	cur = conn.cursor()
+	cur.execute(query)
+
+	content = ""
+	for row in cur.fetchall():
+		content = content + row[0] + " "
+
+	search_object = {
+		"query": {
+			"match": {
+				"content": content
+			}
+		}
+	}
+
+	response = es.search(index = "posts", body = search_object)
+	posts = [res["_source"]["post_id"] for res in response["hits"]["hits"]]
+	posts_str = ""
+	for i, post in enumerate(posts):
+		posts_str = posts_str + str(post)
+		if i != len(posts)-1:
+			posts_str += ","
+	
+	cur.execute("select * from posts where id in ("+posts_str+")")
+
+	posts = []
+	for result in cur.fetchall():
+		post = {
+			"id": result[0] ,
+			'title': result[3],
+			"subject":result[2],
+			"content": result[4],
+			"upvote": result[5],
+			"downvote": result[6]
+		}
+	posts.append(post)
+	
+	cur.close()
+	conn.close()
+
+	return jsonify(posts)
+
 @app.route("/recommendations", methods=['GET'])
 def recommendations():
-    post = {
-        "id" : "1",
-        'title' : "post_title",
-        "subject":"Adaptive web",
-        "content": "This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post4 = {
-        "id": "4",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": "This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post2 = {
-        "id": "2",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": "This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post3 = {
-        "id": "3",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": "This is a test cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    posts = []
-    posts.append(post)
-    posts.append(post2)
-    posts.append(post3)
-    posts.append(post4)
-
-
-    return jsonify(posts)
+	return getRequiredPosts("select content from Posts where Posts.id in (select post_id from (select one.post_id as post_id, two.Searches, three.Reads, four.Upvotes from (select post_id, count(post_id) as Creates from Activites where type=='create' group by post_id) one left join (select post_id, count(post_id) as Searches from Activites where type=='search' group by post_id) two on one.post_id==two.post_id left join (select post_id, count(post_id) as Reads from Activites where type=='read' group by post_id) three on one.post_id==three.post_id left join (select post_id, count(post_id) as Upvotes from Activites where type=='upvote' group by post_id) four on one.post_id==four.post_id order by two.Searches, three.Reads, four.Upvotes)) limit 10")
+    
 
 
 @app.route("/recommendations/<userid>", methods=['GET'])
 def recommendations_user(userid):
     #this api gets recommendations for an user once he is authenticated
-    post = {
-        "id": "1",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": "Authenticated user cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post4 = {
-        "id": "4",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": "Authenticated user cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post2 = {
-        "id": "2",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": "Authenticated user cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    post3 = {
-        "id": "3",
-        'title': "post_title",
-        "subject": "Adaptive web",
-        "content": "Authenticated user cheat sheet. This is a test cheat sheet. "
-                   "This is a test cheat sheet. This is Test cheat sheet. This is a test cheat sheet. This is test cheat sheet.",
-        "upvote": "29",
-        "downvote": "49"
-    }
-    posts = []
-    posts.append(post)
-    posts.append(post2)
-    posts.append(post3)
-    posts.append(post4)
-    return jsonify(posts)
+    return getRequiredPosts("select content from Posts where Posts.id in (select post_id from (select one.post_id as post_id, two.Searches, three.Reads, four.Upvotes from (select post_id, count(post_id) as Creates from Activites where type='create' group by post_id) one left join (select post_id, count(post_id) as Searches from Activites where type=='search' and user_id=="+userid+" group by post_id) two on one.post_id==two.post_id left join (select post_id, count(post_id) as Reads from Activites where type=='read' and user_id=="+userid+" group by post_id) three on one.post_id==three.post_id left join (select post_id, count(post_id) as Upvotes from Activites where type=='upvote' and user_id=="+userid+" group by post_id) four on one.post_id==four.post_id order by two.Searches, three.Reads, four.Upvotes)) limit 10")
 
 
 @app.route("/recommendations/<userid>/myPosts", methods=['GET'])
@@ -211,7 +171,6 @@ def myPosts(userid):
    posts = []
    results = Posts.query.filter_by(user_id=userid)
    for result in results:
-       print(result)
        post = {
            "id": result.id ,
            'title': result.title,
@@ -238,8 +197,30 @@ def search_api():
     }
 
     response = es.search(index = "posts", body = search_object)
-    posts = [res["_source"] for res in response["hits"]["hits"]]
-    activity = Activites(user_id=parsed["userid"], post_id="0", type="search", timestamp=datetime.today().strftime('%Y-%m-%d'),
+    posts = [res["_source"]["post_id"] for res in response["hits"]["hits"]]
+    conn = sqlite3.connect("D:\\Arizona State University\\My Github\\study_genie\\appFolder\\site.db")
+    cur = conn.cursor()
+
+    posts_str = ""
+    for i, post in enumerate(posts):
+    	posts_str = posts_str + str(post)
+    	if i != len(posts)-1:
+    		posts_str += ","
+    cur.execute("select * from posts where id in ("+posts_str+")")
+    
+    posts = []
+    for result in cur.fetchall():
+    	post = {
+    	   "id": result[0] ,
+           'title': result[3],
+           "subject":result[2],
+           "content": result[4],
+           "upvote": result[5],
+           "downvote": result[6]
+    	}
+    	posts.append(post)
+
+    activity = Activites(user_id=parsed["userid"], post_id="0", type="search", timestamp=gettimestamp(),
                          content=searchdata)
     db.session.add(activity)
     db.session.commit()
@@ -252,7 +233,6 @@ def subjectfilter_api(subject):
     posts = []
     results = Posts.query.filter_by(subject=subject)
     for result in results:
-        print(result)
         post = {
             "id": result.id,
             'title': result.title,
@@ -317,17 +297,14 @@ def userStatistics(userid):
 @app.route("/lineChart/<userid>", methods=["GET"])
 def lineChart(userid):
     data = []
-    #print(userid)
     list_timestamps = Activites.query.filter_by(user_id=userid).group_by(Activites.timestamp).with_entities(Activites.timestamp)
 
 
     for list_ts in list_timestamps:
         for timestamp in list_ts:
-           # print(b)
             count = Activites.query.filter_by(timestamp=timestamp,user_id=userid).count()
             element= [timestamp.strftime("%Y-%m-%d"),count]
             data.append(element)
-    #print(data)
 
     """ data = [["2000-06-05", 116], ["2000-06-06", 129], ["2000-06-07", 135], ["2000-06-08", 86], ["2000-06-09", 73],
             ["2000-06-10", 85], ["2000-06-11", 73], ["2000-06-12", 68], ["2000-06-13", 92], ["2000-06-14", 130],
