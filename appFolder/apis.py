@@ -110,7 +110,7 @@ def read_api():
     return "read"
 
 
-def getRequiredPosts(query):
+def getRequiredPosts(query, userid = None):
 	conn = sqlite3.connect("D:\\Arizona State University\\My Github\\study_genie\\appFolder\\site.db")
 	cur = conn.cursor()
 	cur.execute(query)
@@ -118,6 +118,11 @@ def getRequiredPosts(query):
 	content = ""
 	for row in cur.fetchall():
 		content = content + row[0] + " "
+
+	if userid is not None:
+		cur.execute("select content from Activites where user_id=="+str(userid))
+		for row in cur.fetchall():
+			content += row[0] + " "
 
 	search_object = {
 		"query": {
@@ -148,7 +153,7 @@ def getRequiredPosts(query):
 			"downvote": result[6]
 		}
 	posts.append(post)
-	
+
 	cur.close()
 	conn.close()
 
@@ -156,14 +161,14 @@ def getRequiredPosts(query):
 
 @app.route("/recommendations", methods=['GET'])
 def recommendations():
-	return getRequiredPosts("select content from Posts where Posts.id in (select post_id from (select one.post_id as post_id, two.Searches, three.Reads, four.Upvotes from (select post_id, count(post_id) as Creates from Activites where type=='create' group by post_id) one left join (select post_id, count(post_id) as Searches from Activites where type=='search' group by post_id) two on one.post_id==two.post_id left join (select post_id, count(post_id) as Reads from Activites where type=='read' group by post_id) three on one.post_id==three.post_id left join (select post_id, count(post_id) as Upvotes from Activites where type=='upvote' group by post_id) four on one.post_id==four.post_id order by two.Searches, three.Reads, four.Upvotes)) limit 10")
+	return getRequiredPosts("select content from Posts where Posts.id in (select post_id from (select one.post_id as post_id, two.Reads, three.Upvotes from (select post_id, count(post_id) as Creates from Activites where type=='create' group by post_id) one left join (select post_id, count(post_id) as Reads from Activites where type=='read' group by post_id) two on one.post_id==two.post_id left join (select post_id, count(post_id) as Upvotes from Activites where type=='upvote' group by post_id) three on one.post_id==three.post_id order by two.Reads, three.Upvotes)) limit 10")
     
 
 
 @app.route("/recommendations/<userid>", methods=['GET'])
 def recommendations_user(userid):
     #this api gets recommendations for an user once he is authenticated
-    return getRequiredPosts("select content from Posts where Posts.id in (select post_id from (select one.post_id as post_id, two.Searches, three.Reads, four.Upvotes from (select post_id, count(post_id) as Creates from Activites where type='create' group by post_id) one left join (select post_id, count(post_id) as Searches from Activites where type=='search' and user_id=="+userid+" group by post_id) two on one.post_id==two.post_id left join (select post_id, count(post_id) as Reads from Activites where type=='read' and user_id=="+userid+" group by post_id) three on one.post_id==three.post_id left join (select post_id, count(post_id) as Upvotes from Activites where type=='upvote' and user_id=="+userid+" group by post_id) four on one.post_id==four.post_id order by two.Searches, three.Reads, four.Upvotes)) limit 10")
+    return getRequiredPosts("select content from Posts where Posts.id in (select post_id from (select one.post_id as post_id, two.Reads, three.Upvotes from (select post_id, count(post_id) as Creates from Activites where type='create' group by post_id) one left join (select post_id, count(post_id) as Reads from Activites where type=='read' and user_id=="+userid+" group by post_id) two on one.post_id==two.post_id left join (select post_id, count(post_id) as Upvotes from Activites where type=='upvote' and user_id=="+userid+" group by post_id) three on one.post_id==three.post_id order by two.Reads, three.Upvotes)) limit 10", userid)
 
 
 @app.route("/recommendations/<userid>/myPosts", methods=['GET'])
